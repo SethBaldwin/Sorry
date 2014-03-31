@@ -17,3 +17,17 @@ Cell::Cell(int o, int x, int y, int s)
 	loc_y = y;
 	special = s;
 }
+int Cell::getLoc_x()
+{
+	return loc_x;
+}
+
+int Cell::getLoc_y()
+{
+	return loc_y;
+}
+
+int Cell::getColor()
+{
+	return occupied;
+}
