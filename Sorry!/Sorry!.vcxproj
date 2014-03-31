@@ -71,8 +71,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cards.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="MyForm.cpp" />
+    <ClCompile Include="pawns.cpp" />
+    <ClCompile Include="players.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -82,10 +85,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cards.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="pawns.h" />
+    <ClInclude Include="players.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">
