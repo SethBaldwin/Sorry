@@ -4,7 +4,6 @@
 #include <string>
 #include "Cell.h"
 
-//vector<Cell> board_perim[2] = {(Cell p1(1, 569, 518, 0)),
 
 int Board = 592; // Must be Divisible by 16.
 int CellSize = Board/16;
@@ -15,7 +14,7 @@ vector<Cell> b;
 
 
 void MakeBoard();
-//Brush ^convertColor(int);
+
 
 namespace Sorry {
 
@@ -25,6 +24,8 @@ namespace Sorry {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+
+	Brush ^convertColor(int); //----------
 
 	/// <summary>
 	/// Summary for MyForm
@@ -83,6 +84,7 @@ namespace Sorry {
 			this->panel1->Name = L"panel1";
 			this->panel1->Size = System::Drawing::Size(560, 560);
 			this->panel1->TabIndex = 0;
+			this->panel1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::panel1_MouseUp);
 			// 
 			// draw
 			// 
@@ -120,7 +122,7 @@ namespace Sorry {
 				 blue = gcnew SolidBrush(Color::Blue);
 				 red = gcnew SolidBrush(Color::Red);
 
-				 black_p = gcnew Pen(Color::Black, 3);
+				 black_p = gcnew Pen(Color::Black, 3); // 3 is importatne
 
 
 				 draw -> Enabled = true;
@@ -130,13 +132,33 @@ namespace Sorry {
 				 for (int i = 0; i < b.size(); i++)
 					 gp1 -> DrawRectangle(black_p,b[i].getLoc_x(),b[i].getLoc_y(),CellSize,CellSize);
 
-				 //for (int i = 0; i < b.size(); i++)
-					 //gp1 -> FillRectangle(convertColor(b[i].getColor()),b[i].getLoc_x(),b[i].getLoc_y(),CellSize,CellSize);
+				 for (int i = 0; i < b.size(); i++)
+					 gp1 -> FillRectangle(convertColor(b[i].getColor()), b[i].getLoc_x()+2, b[i].getLoc_y()+2, CellSize-3,CellSize-3);
 
 				 draw -> Enabled = false;
 			 }
 
-	};
+	private: System::Void panel1_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+
+			 }
+};
+
+
+Brush ^convertColor(int c)
+{
+	Brush ^col;
+	if (c == 1)
+		col = gcnew SolidBrush(Color::Red);
+	else if (c == 2)
+		col = gcnew SolidBrush(Color::Blue);
+	else if (c == 3)
+		col = gcnew SolidBrush(Color::Yellow);
+	else if (c == 4)
+		col = gcnew SolidBrush(Color::Green);
+
+	return col;
+}
+
 }
 
 
@@ -173,19 +195,5 @@ void MakeBoard()
 
 }
 
-/*
-Brush ^convertColor(int c)
-{
-	Brush ^col;
-	if (c <= 4)
-		col = gcnew SolidBrush(Color::Red);
-	else if (c <= 8)
-		col = gcnew SolidBrush(Color::Blue);
-	else if (c <= 12)
-		col = gcnew SolidBrush(Color::Yellow);
-	else if (c <=16)
-		col = gcnew SolidBrush(Color::Green);
 
-	return col;
-}
-*/
+
