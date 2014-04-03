@@ -15,4 +15,6 @@ public:
 	int getLoc_y();
 	int getColor();
 
+	void setColor(int num);
+
 };

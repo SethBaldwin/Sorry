@@ -31,3 +31,8 @@ int Cell::getColor()
 {
 	return occupied;
 }
+
+void Cell::setColor(int num)
+{
+	occupied = num;
+}
