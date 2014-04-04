@@ -179,7 +179,7 @@ int getCell(int x, int y)
 {
 	for (int i = 0; i < 60; i++)
 	{
-		if ((abs(x - b[i].getLoc_x()) < 37) && (abs(y - b[i].getLoc_y()) < 37))
+		if (  ((x - b[i].getLoc_x() < 37) && (y - b[i].getLoc_y()) < 37)  &&  ((x - b[i].getLoc_x() > 0) && (y - b[i].getLoc_y()) > 0) )
 			return i;
 	}
 	return 1;
