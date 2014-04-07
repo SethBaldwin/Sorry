@@ -8,6 +8,8 @@
 int Board = 592; // Must be Divisible by 16.
 int CellSize = Board/16;
 
+int lastOc; //Stores last occupied pawn number for mouse up 
+
 int mouseX,mouseY; // Get Click location
 
 vector<Cell> b;
@@ -25,6 +27,7 @@ namespace Sorry {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
+	int getCell(int,int);
 	Brush ^convertColor(int); //----------
 
 	/// <summary>
@@ -142,7 +145,19 @@ namespace Sorry {
 	private: System::Void panel1_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 				 mouseX = (e->X);
 				 mouseY = (e->Y);
+<<<<<<< HEAD
+=======
+
+				 int cl = 0;
+				 cl = getCell(mouseX,mouseY);
+
+				 b[cl].setColor(5);
+				 draw -> Enabled = true;
+
+
+>>>>>>> 04a45e204badf89fcdf4155ddc56d4661a728d24
 			 }
+
 };
 
 
@@ -157,8 +172,20 @@ Brush ^convertColor(int c)
 		col = gcnew SolidBrush(Color::Yellow);
 	else if (c == 4)
 		col = gcnew SolidBrush(Color::Green);
+	else if (c == 5)
+		col = gcnew SolidBrush(Color::Black);
 
 	return col;
+}
+
+int getCell(int x, int y)
+{
+	for (int i = 0; i < 60; i++)
+	{
+		if (  ((x - b[i].getLoc_x() < 37) && (y - b[i].getLoc_y()) < 37)  &&  ((x - b[i].getLoc_x() > 0) && (y - b[i].getLoc_y()) > 0) )
+			return i;
+	}
+	return 1;
 }
 
 }
@@ -177,11 +204,11 @@ void MakeBoard()
 
 		if(x < 15)
 		{
-			b.push_back(Cell (1, Board-CellSize*(x+1), Board-CellSize, 0));
+			b.push_back(Cell (1, Board-CellSize*(x+1), Board-CellSize, 0));//(x+1)
 		}
 		else if(x < 30)
 		{
-			b.push_back(Cell (2, 0, Board-CellSize*(y+1), 0));
+			b.push_back(Cell (2, 0, Board-CellSize*(y+1), 0));//(y+1)
 		}
 		else if(x < 45)
 		{
