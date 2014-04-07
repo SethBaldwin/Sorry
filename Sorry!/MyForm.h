@@ -100,6 +100,7 @@ namespace Sorry {
 			this->Name = L"MyForm";
 			this->Text = L"Sorry!";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
+			this->Move += gcnew System::EventHandler(this, &MyForm::draw_Tick);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -139,7 +140,8 @@ namespace Sorry {
 			 }
 
 	private: System::Void panel1_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-
+				 mouseX = (e->X);
+				 mouseY = (e->Y);
 			 }
 };
 
