@@ -2,7 +2,10 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 #include "Cell.h"
+#include "pawns.h"
+using namespace std;
 
 
 int Board = 592; // Must be Divisible by 16. Cur = 592
@@ -12,23 +15,37 @@ int lastOc; //Stores last occupied pawn number for mouse up
 
 int mouseX,mouseY; // Get Click location
 
+int turn = 0;
+
+int pawn_number;
+int card_number;
+
+vector<int> cardInts;
+
+
 vector<Cell> b;
 
+vector<Pawns> red_Pawns;
 vector<Cell> red_Start;
 vector<Cell> red_Home;
 
+vector<Pawns> blue_Pawns;
 vector<Cell> blue_Start;
 vector<Cell> blue_Home;
 
+vector<Pawns> yellow_Pawns;
 vector<Cell> yellow_Start;
 vector<Cell> yellow_Home;
 
+vector<Pawns> green_Pawns;
 vector<Cell> green_Start;
 vector<Cell> green_Home;
 
 
 void MakeBoard();
 void MakeStart();
+void pawnSetup();
+void makeDeck();
 
 namespace Sorry {
 
@@ -39,7 +56,8 @@ namespace Sorry {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	int getCell(int,int);
+	int getPawn(int, int);
+	int getCell(int, int);
 	Brush ^convertColor(int); //----------
 
 	/// <summary>
@@ -69,6 +87,11 @@ namespace Sorry {
 		}
 	private: System::Windows::Forms::Panel^  panel1;
 	private: System::Windows::Forms::Timer^  draw;
+	private: System::Windows::Forms::NumericUpDown^  pawnNum;
+
+	private: System::Windows::Forms::Button^  drawCard;
+	private: System::Windows::Forms::NumericUpDown^  cardNum;
+	private: System::Windows::Forms::Button^  makeMove;
 	private: System::ComponentModel::IContainer^  components;
 	protected: 
 
@@ -88,13 +111,18 @@ namespace Sorry {
 			this->components = (gcnew System::ComponentModel::Container());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->draw = (gcnew System::Windows::Forms::Timer(this->components));
+			this->pawnNum = (gcnew System::Windows::Forms::NumericUpDown());
+			this->drawCard = (gcnew System::Windows::Forms::Button());
+			this->cardNum = (gcnew System::Windows::Forms::NumericUpDown());
+			this->makeMove = (gcnew System::Windows::Forms::Button());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pawnNum))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->cardNum))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// panel1
 			// 
-			this->panel1->AutoSize = true;
 			this->panel1->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
-			this->panel1->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->panel1->Dock = System::Windows::Forms::DockStyle::Left;
 			this->panel1->Location = System::Drawing::Point(0, 0);
 			this->panel1->Name = L"panel1";
 			this->panel1->Size = System::Drawing::Size(560, 560);
@@ -105,19 +133,59 @@ namespace Sorry {
 			// 
 			this->draw->Tick += gcnew System::EventHandler(this, &MyForm::draw_Tick);
 			// 
+			// pawnNum
+			// 
+			this->pawnNum->Location = System::Drawing::Point(635, 177);
+			this->pawnNum->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {5, 0, 0, System::Int32::MinValue});
+			this->pawnNum->Name = L"pawnNum";
+			this->pawnNum->Size = System::Drawing::Size(72, 20);
+			this->pawnNum->TabIndex = 1;
+			// 
+			// drawCard
+			// 
+			this->drawCard->Location = System::Drawing::Point(617, 36);
+			this->drawCard->Name = L"drawCard";
+			this->drawCard->Size = System::Drawing::Size(105, 31);
+			this->drawCard->TabIndex = 2;
+			this->drawCard->Text = L"Draw";
+			this->drawCard->UseVisualStyleBackColor = true;
+			this->drawCard->Click += gcnew System::EventHandler(this, &MyForm::drawCard_Click);
+			// 
+			// cardNum
+			// 
+			this->cardNum->Location = System::Drawing::Point(635, 82);
+			this->cardNum->Name = L"cardNum";
+			this->cardNum->Size = System::Drawing::Size(72, 20);
+			this->cardNum->TabIndex = 3;
+			// 
+			// makeMove
+			// 
+			this->makeMove->Location = System::Drawing::Point(617, 118);
+			this->makeMove->Name = L"makeMove";
+			this->makeMove->Size = System::Drawing::Size(105, 35);
+			this->makeMove->TabIndex = 4;
+			this->makeMove->Text = L"Move";
+			this->makeMove->UseVisualStyleBackColor = true;
+			this->makeMove->Click += gcnew System::EventHandler(this, &MyForm::makeMove_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(560, 560);
+			this->ClientSize = System::Drawing::Size(775, 560);
+			this->Controls->Add(this->makeMove);
+			this->Controls->Add(this->cardNum);
+			this->Controls->Add(this->drawCard);
+			this->Controls->Add(this->pawnNum);
 			this->Controls->Add(this->panel1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedToolWindow;
 			this->Name = L"MyForm";
 			this->Text = L"Sorry!";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->Move += gcnew System::EventHandler(this, &MyForm::draw_Tick);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pawnNum))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->cardNum))->EndInit();
 			this->ResumeLayout(false);
-			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -125,11 +193,13 @@ namespace Sorry {
 		Brush ^yellow, ^green, ^blue, ^red;
 		Pen ^black_p;
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
-
+				 
 				 MakeBoard();
 				 MakeStart();
+				 pawnSetup();
+				 makeDeck();
 
-				 ClientSize = System::Drawing::Size(Board+2, Board+2);
+				 ClientSize = System::Drawing::Size(Board+200, Board+2);
 				 panel1->Size = System::Drawing::Size(Board+2, Board+2);
 
 				 gp1 = panel1->CreateGraphics();
@@ -173,6 +243,9 @@ namespace Sorry {
 				 for (int i = 0; i < green_Home.size(); i++)
 					 gp1 -> DrawRectangle(black_p, green_Home[i].getLoc_x(), green_Home[i].getLoc_y(), CellSize,CellSize);
 
+				 for (int i = 0; i < red_Pawns.size(); i++)
+					 gp1 -> FillRectangle(convertColor(red_Pawns[i].getCol()), red_Pawns[i].getLoc_x()+2, red_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
+
 				 draw -> Enabled = false;
 			 }
 
@@ -181,13 +254,51 @@ namespace Sorry {
 				 mouseY = (e->Y);
 
 				 int cl = 0;
-				 cl = getCell(mouseX,mouseY);
 
-				 b[cl].setColor(5);
+				 //cl = getCell(mouseX,mouseY);
+				 pawn_number = getPawn(mouseX,mouseY);
+
+				 if (pawn_number >= 0)
+					red_Pawns[pawn_number-1].setCol(5);
+
+				 pawnNum->Value = pawn_number;
+
 				 draw -> Enabled = true;
 
 			 }
 
+private: System::Void drawCard_Click(System::Object^  sender, System::EventArgs^  e) {
+			 card_number = cardInts.back();
+			 if (cardInts.size() > 0)
+			 {
+				cardNum -> Value = card_number;
+				cardInts.pop_back();
+			 }
+			 else
+				 makeDeck();
+		 }
+private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^  e) {
+			 //Switch for 4 colors.
+			 if (red_Pawns[pawn_number-1].getLoc() == 1)// For exiting Start
+			 {
+				 for (int i = 0; i < card_number; i++)
+				 {
+					 red_Pawns[pawn_number-1].setLoc_x( b[i+4].getLoc_x() );
+					 red_Pawns[pawn_number-1].setLoc_y( b[i+4].getLoc_y() );
+				 }
+				 red_Pawns[pawn_number-1].setLoc(2);
+			 }
+			 else if (red_Pawns[pawn_number-1].getLoc() == 2)// For exiting Start
+			 {
+				 for (int i = 0; i < card_number; i++)
+				 {
+					 red_Pawns[pawn_number-1].setLoc_x( b[i+4].getLoc_x() );
+					 red_Pawns[pawn_number-1].setLoc_y( b[i+4].getLoc_y() );
+				 }
+				 red_Pawns[pawn_number-1].setLoc(2);
+			 }
+			 draw -> Enabled = true;
+		 }
 };
 
 
@@ -215,7 +326,17 @@ int getCell(int x, int y)
 		if (  ((x - b[i].getLoc_x() < 37) && (y - b[i].getLoc_y()) < 37)  &&  ((x - b[i].getLoc_x() > 0) && (y - b[i].getLoc_y()) > 0) )
 			return i;
 	}
-	return 1;
+	return -1;
+}
+
+int getPawn(int x, int y)
+{
+	for (int i = 0; i < red_Pawns.size(); i++)
+	{
+		if (  ((x - red_Pawns[i].getLoc_x() < 37) && (y - red_Pawns[i].getLoc_y()) < 37)  &&  ((x - red_Pawns[i].getLoc_x() > 0) && (y - red_Pawns[i].getLoc_y()) > 0) )
+			return red_Pawns[i].getNum();
+	}
+	return -1;
 }
 
 }
@@ -329,5 +450,15 @@ void MakeStart()
 	green_Home.push_back(Cell (4, (Board-CellSize*7), (Board-CellSize*14), 0));
 }
 
+void pawnSetup()
+{
+	red_Pawns.push_back(Pawns (1, red_Start[0].getLoc_x(), red_Start[0].getLoc_y(), 1, 1));
+}
 
 
+void makeDeck()
+{
+	int cr[] = {1,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,7,7,7,7,8,8,8,8,10,10,10,10,11,11,11,11,12,12,12,12,13,13,13,13};
+	cardInts.assign(cr, cr + sizeof cr / sizeof cr[0]);
+	random_shuffle( cardInts.begin(), cardInts.end() );
+}
