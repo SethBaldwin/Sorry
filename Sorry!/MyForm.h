@@ -1,11 +1,13 @@
 #pragma once
 
+#include <ctime>
 #include <vector>
 #include <string>
 #include <algorithm>
 #include "Cell.h"
 #include "pawns.h"
 using namespace std;
+
 
 
 int Board = 592; // Must be Divisible by 16. Cur = 592
@@ -281,12 +283,10 @@ private: System::Void drawCard_Click(System::Object^  sender, System::EventArgs^
 		 }
 private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^  e) {
 			 //Switch for 4 colors.
-<<<<<<< HEAD
-=======
+
 			 //needs to check if a pawn is selected at all.
 
 			 int rpl = red_Pawns[pawn_number-1].getLoc(); //So i dont have to type that out every time.
->>>>>>> 8ce40d212567c995c37a406098c7cfe7c23fcc19
 
 			 if (red_Pawns[pawn_number-1].getLoc() == 1)// For exiting Start
 			 {
@@ -301,13 +301,8 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 				 }
 				 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
 			 }
-<<<<<<< HEAD
-			 else if (red_Pawns[pawn_number-1].getLoc() == 2)
-=======
-
 
 			 else if (red_Pawns[pawn_number-1].getLoc() > 2)// For exiting Start
->>>>>>> 8ce40d212567c995c37a406098c7cfe7c23fcc19
 			 {
 				 if (rpl+card_number > 59)
 				 {
@@ -325,8 +320,7 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 					 }
 				 red_Pawns[pawn_number-1].setLoc(tempPawnLocation);
 				 }
-<<<<<<< HEAD
-=======
+
 				 else
 				 {
 					 for (int i = 0; i < card_number; i++)
@@ -337,8 +331,6 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 				 red_Pawns[pawn_number-1].setLoc(rpl+card_number);
 				 }
 
-				 
->>>>>>> 8ce40d212567c995c37a406098c7cfe7c23fcc19
 			 }
 
 			 draw -> Enabled = true;
