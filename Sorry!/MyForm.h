@@ -279,6 +279,7 @@ private: System::Void drawCard_Click(System::Object^  sender, System::EventArgs^
 		 }
 private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^  e) {
 			 //Switch for 4 colors.
+
 			 if (red_Pawns[pawn_number-1].getLoc() == 1)// For exiting Start
 			 {
 				 for (int i = 0; i < card_number; i++)
@@ -288,15 +289,15 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 				 }
 				 red_Pawns[pawn_number-1].setLoc(2);
 			 }
-			 else if (red_Pawns[pawn_number-1].getLoc() == 2)// For exiting Start
+			 else if (red_Pawns[pawn_number-1].getLoc() == 2)
 			 {
 				 for (int i = 0; i < card_number; i++)
 				 {
 					 red_Pawns[pawn_number-1].setLoc_x( b[i+4].getLoc_x() );
 					 red_Pawns[pawn_number-1].setLoc_y( b[i+4].getLoc_y() );
 				 }
-				 red_Pawns[pawn_number-1].setLoc(2);
 			 }
+
 			 draw -> Enabled = true;
 		 }
 };
@@ -344,7 +345,7 @@ int getPawn(int x, int y)
 
 
 
-void MakeBoard()
+void MakeBoard() // Makes the brim cells of the playing board
 {
 	int y = 0;
 	for (int x = 0; x < 60; x++)
