@@ -14,6 +14,8 @@ int CellSize = Board/16; // = 37
 int lastOc; //Stores last occupied pawn number for mouse up 
 
 int mouseX,mouseY; // Get Click location
+int pawnLoc; // Used in makeMove button to keep track of the pawns location in the board vector.
+
 
 int turn = 0;
 
@@ -279,23 +281,64 @@ private: System::Void drawCard_Click(System::Object^  sender, System::EventArgs^
 		 }
 private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^  e) {
 			 //Switch for 4 colors.
+<<<<<<< HEAD
+=======
+			 //needs to check if a pawn is selected at all.
+
+			 int rpl = red_Pawns[pawn_number-1].getLoc(); //So i dont have to type that out every time.
+>>>>>>> 8ce40d212567c995c37a406098c7cfe7c23fcc19
 
 			 if (red_Pawns[pawn_number-1].getLoc() == 1)// For exiting Start
 			 {
-				 for (int i = 0; i < card_number; i++)
+				 if (card_number <= 2) // Pawn can only leave if a 1 or 2 is drawn.
 				 {
-					 red_Pawns[pawn_number-1].setLoc_x( b[i+4].getLoc_x() );
-					 red_Pawns[pawn_number-1].setLoc_y( b[i+4].getLoc_y() );
+					 for (int i = 0; i < card_number; i++)
+					 {
+						 red_Pawns[pawn_number-1].setLoc_x( b[i+4].getLoc_x() );
+						 red_Pawns[pawn_number-1].setLoc_y( b[i+4].getLoc_y() );
+					 }
+					 red_Pawns[pawn_number-1].setLoc(card_number+4);
 				 }
-				 red_Pawns[pawn_number-1].setLoc(2);
+				 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
 			 }
+<<<<<<< HEAD
 			 else if (red_Pawns[pawn_number-1].getLoc() == 2)
+=======
+
+
+			 else if (red_Pawns[pawn_number-1].getLoc() > 2)// For exiting Start
+>>>>>>> 8ce40d212567c995c37a406098c7cfe7c23fcc19
 			 {
-				 for (int i = 0; i < card_number; i++)
+				 if (rpl+card_number > 59)
 				 {
-					 red_Pawns[pawn_number-1].setLoc_x( b[i+4].getLoc_x() );
-					 red_Pawns[pawn_number-1].setLoc_y( b[i+4].getLoc_y() );
+					 for (int i = 0; i < (59-rpl); i++)
+					 {
+						 red_Pawns[pawn_number-1].setLoc_x( b[rpl+i].getLoc_x() );
+						 red_Pawns[pawn_number-1].setLoc_y( b[rpl+i].getLoc_y() );
+					 }
+					 int tempPawnLocation = 0;
+					 for (int i = 0; i < card_number-(59-rpl)-1; i++) // -1 because vector begins at 0
+					 {
+						 red_Pawns[pawn_number-1].setLoc_x( b[i].getLoc_x() );
+						 red_Pawns[pawn_number-1].setLoc_y( b[i].getLoc_y() );
+						 tempPawnLocation++;
+					 }
+				 red_Pawns[pawn_number-1].setLoc(tempPawnLocation);
 				 }
+<<<<<<< HEAD
+=======
+				 else
+				 {
+					 for (int i = 0; i < card_number; i++)
+					 {
+						 red_Pawns[pawn_number-1].setLoc_x( b[rpl+i].getLoc_x() );
+						 red_Pawns[pawn_number-1].setLoc_y( b[rpl+i].getLoc_y() );
+					 }
+				 red_Pawns[pawn_number-1].setLoc(rpl+card_number);
+				 }
+
+				 
+>>>>>>> 8ce40d212567c995c37a406098c7cfe7c23fcc19
 			 }
 
 			 draw -> Enabled = true;
@@ -350,7 +393,6 @@ void MakeBoard() // Makes the brim cells of the playing board
 	int y = 0;
 	for (int x = 0; x < 60; x++)
 	{
-		
 		if (y%15==0)
 			y=0;
 
@@ -429,7 +471,7 @@ void MakeStart()
 
 	yellow_Home.push_back(Cell (3, (Board-CellSize*14), (Board-CellSize*10), 0));
 	yellow_Home.push_back(Cell (3, (Board-CellSize*14)+(CellSize/2), (Board-CellSize*10)+(CellSize/2), 0));
-	yellow_Home.push_back(Cell (3, (Board-CellSize*14)-(CellSize/2), (Board-CellSize*10)+(CellSize/2), 0));
+	yellow_Home.push_back(Cell (3, (Board-CellSize*15)+(CellSize/2), (Board-CellSize*10)+(CellSize/2), 0));
 	yellow_Home.push_back(Cell (3, (Board-CellSize*14), (Board-CellSize*9), 0));
 
 	////////////////////////// GREEN

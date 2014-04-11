@@ -4,7 +4,11 @@ using namespace std;
 class Pawns
 {
 private:
-	int loc_x, loc_y, color, number, loc;
+	int loc_x;
+	int loc_y;
+	int color; // What color
+	int number; // Which pawn. prevents same pawn from bein selected.
+	int loc; // Tracks which vector the piece is in.
 
 public:
 	Pawns(int color, int loc_x, int loc_y, int number, int loc);
