@@ -19,11 +19,11 @@ public:
 	int getLoc_y();
 	int getCol();
 	int getNum();
-	int getLoc();
+	int getLoc(); // Tracks which vector the piece is in.
 
 	void setLoc_x(int x);
 	void setLoc_y(int y);
 	void setCol(int num);
-	void setLoc(int num);
+	void setLoc(int num); // Tracks which vector the piece is in.
 };
 
