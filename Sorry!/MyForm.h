@@ -259,7 +259,12 @@ namespace Sorry {
 
 				 for (int i = 0; i < blue_Pawns.size(); i++)
 					 gp1 -> FillRectangle(convertColor(blue_Pawns[i].getCol()), blue_Pawns[i].getLoc_x()+2, blue_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
-
+				 
+				 for (int i = 0; i < yellow_Pawns.size(); i++)
+					 gp1 -> FillRectangle(convertColor(yellow_Pawns[i].getCol()), yellow_Pawns[i].getLoc_x()+2, yellow_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
+				 
+				 for (int i = 0; i < green_Pawns.size(); i++)
+					 gp1 -> FillRectangle(convertColor(green_Pawns[i].getCol()), green_Pawns[i].getLoc_x()+2, green_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
 
 
 				 draw -> Enabled = false;
@@ -387,37 +392,140 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 					 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
 				 }
 
-				 else if (blue_Pawns[pawn_number-5].getLoc() >= 0)
+				 else if (blue_Pawns[pawn_number-4].getLoc() >= 0)
 				 {
 					 if (bpl+card_number > 59)
 					 {
 						 for (int i = 0; i < (59-bpl); i++)
 						 {
-							 blue_Pawns[pawn_number-5].setLoc_x( b[bpl+i].getLoc_x() );
-							 blue_Pawns[pawn_number-5].setLoc_y( b[bpl+i].getLoc_y() );
+							 blue_Pawns[pawn_number-4].setLoc_x( b[bpl+i].getLoc_x() );
+							 blue_Pawns[pawn_number-4].setLoc_y( b[bpl+i].getLoc_y() );
 						 }
 						 int tempPawnLocation = 0;
 						 for (int i = 0; i < card_number-(59-bpl)-1; i++) // -1 because vector begins at 0
 						 {
-							 blue_Pawns[pawn_number-5].setLoc_x( b[i].getLoc_x() );
-							 blue_Pawns[pawn_number-5].setLoc_y( b[i].getLoc_y() );
+							 blue_Pawns[pawn_number-4].setLoc_x( b[i].getLoc_x() );
+							 blue_Pawns[pawn_number-4].setLoc_y( b[i].getLoc_y() );
 							 tempPawnLocation++;
 						 }
-					 blue_Pawns[pawn_number-5].setLoc(tempPawnLocation);
+					 blue_Pawns[pawn_number-4].setLoc(tempPawnLocation);
 					 }
 
 					 else
 					 {
 						 for (int i = 0; i < card_number; i++)
 						 {
-							 blue_Pawns[pawn_number-5].setLoc_x( b[bpl+i].getLoc_x() );
-							 blue_Pawns[pawn_number-5].setLoc_y( b[bpl+i].getLoc_y() );
+							 blue_Pawns[pawn_number-4].setLoc_x( b[bpl+i].getLoc_x() );
+							 blue_Pawns[pawn_number-4].setLoc_y( b[bpl+i].getLoc_y() );
 						 }
-					 blue_Pawns[pawn_number-5].setLoc(bpl+card_number);
+					 blue_Pawns[pawn_number-4].setLoc(bpl+card_number);
 					 }
-
 				 }
 			 }
+			 //
+			 ////////////////// YELLOW //////////////////////
+			 //
+			 else if (pawn_number >= 8 && pawn_number < 12)
+			 {
+				 int gpl = yellow_Pawns[pawn_number-8].getLoc(); //So i dont have to type that out every time.
+
+				 if (yellow_Pawns[pawn_number-8].getLoc() == -1)// For exiting Start
+				 {
+					 if (card_number <= 2) // Pawn can only leave if a 1 or 2 is drawn.
+					 {
+						 for (int i = 0; i < card_number; i++)
+						 {
+							 yellow_Pawns[pawn_number-8].setLoc_x( b[i+34].getLoc_x() ); // + 19 because 1st space out of yellow start is b[19].
+							 yellow_Pawns[pawn_number-8].setLoc_y( b[i+34].getLoc_y() );
+						 }
+						 yellow_Pawns[pawn_number-8].setLoc(card_number+34);
+					 }
+					 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
+				 }
+
+				 else if (yellow_Pawns[pawn_number-8].getLoc() >= 0)
+				 {
+					 if (gpl+card_number > 59)
+					 {
+						 for (int i = 0; i < (59-gpl); i++)
+						 {
+							 yellow_Pawns[pawn_number-8].setLoc_x( b[gpl+i].getLoc_x() );
+							 yellow_Pawns[pawn_number-8].setLoc_y( b[gpl+i].getLoc_y() );
+						 }
+						 int tempPawnLocation = 0;
+						 for (int i = 0; i < card_number-(59-gpl)-1; i++) // -1 because vector begins at 0
+						 {
+							 yellow_Pawns[pawn_number-8].setLoc_x( b[i].getLoc_x() );
+							 yellow_Pawns[pawn_number-8].setLoc_y( b[i].getLoc_y() );
+							 tempPawnLocation++;
+						 }
+					 yellow_Pawns[pawn_number-8].setLoc(tempPawnLocation);
+					 }
+
+					 else
+					 {
+						 for (int i = 0; i < card_number; i++)
+						 {
+							 yellow_Pawns[pawn_number-8].setLoc_x( b[gpl+i].getLoc_x() );
+							 yellow_Pawns[pawn_number-8].setLoc_y( b[gpl+i].getLoc_y() );
+						 }
+					 yellow_Pawns[pawn_number-8].setLoc(gpl+card_number);
+					 }
+				 }
+			 }
+			 //
+			 ////////////////// GREEN //////////////////////
+			 //
+			 else if (pawn_number >= 13)
+			 {
+				 int gpl = green_Pawns[pawn_number-13].getLoc(); //So i dont have to type that out every time.
+
+				 if (green_Pawns[pawn_number-13].getLoc() == -1)// For exiting Start
+				 {
+					 if (card_number <= 2) // Pawn can only leave if a 1 or 2 is drawn.
+					 {
+						 for (int i = 0; i < card_number; i++)
+						 {
+							 green_Pawns[pawn_number-13].setLoc_x( b[i+49].getLoc_x() ); // + 19 because 1st space out of green start is b[19].
+							 green_Pawns[pawn_number-13].setLoc_y( b[i+49].getLoc_y() );
+						 }
+						 green_Pawns[pawn_number-13].setLoc(card_number+49);
+					 }
+					 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
+				 }
+
+				 else if (green_Pawns[pawn_number-13].getLoc() >= 0)
+				 {
+					 if (gpl+card_number > 59)
+					 {
+						 for (int i = 0; i < (59-gpl); i++)
+						 {
+							 green_Pawns[pawn_number-13].setLoc_x( b[gpl+i].getLoc_x() );
+							 green_Pawns[pawn_number-13].setLoc_y( b[gpl+i].getLoc_y() );
+						 }
+						 int tempPawnLocation = 0;
+						 for (int i = 0; i < card_number-(59-gpl)-1; i++) // -1 because vector begins at 0
+						 {
+							 green_Pawns[pawn_number-13].setLoc_x( b[i].getLoc_x() );
+							 green_Pawns[pawn_number-13].setLoc_y( b[i].getLoc_y() );
+							 tempPawnLocation++;
+						 }
+					 green_Pawns[pawn_number-13].setLoc(tempPawnLocation);
+					 }
+
+					 else
+					 {
+						 for (int i = 0; i < card_number; i++)
+						 {
+							 green_Pawns[pawn_number-13].setLoc_x( b[gpl+i].getLoc_x() );
+							 green_Pawns[pawn_number-13].setLoc_y( b[gpl+i].getLoc_y() );
+						 }
+					 green_Pawns[pawn_number-13].setLoc(gpl+card_number);
+					 }
+				 }
+			 }
+
+
 
 			 draw -> Enabled = true;
 		 }
@@ -458,20 +566,30 @@ int getPawn(int x, int y)
 		if (  ((x - red_Pawns[i].getLoc_x() < 37) && (y - red_Pawns[i].getLoc_y()) < 37)  &&  ((x - red_Pawns[i].getLoc_x() > 0) && (y - red_Pawns[i].getLoc_y()) > 0) )
 			return red_Pawns[i].getNum();
 	}
+
 	for (int i = 0; i < blue_Pawns.size(); i++)
 	{
 		if (  ((x - blue_Pawns[i].getLoc_x() < 37) && (y - blue_Pawns[i].getLoc_y()) < 37)  &&  ((x - blue_Pawns[i].getLoc_x() > 0) && (y - blue_Pawns[i].getLoc_y()) > 0) )
 			return blue_Pawns[i].getNum();
 	}
 
-	//TODO yellow_Pawns
-	//TODO GReen pawnss
+	for (int i = 0; i < yellow_Pawns.size(); i++)
+	{
+		if (  ((x - yellow_Pawns[i].getLoc_x() < 37) && (y - yellow_Pawns[i].getLoc_y()) < 37)  &&  ((x - yellow_Pawns[i].getLoc_x() > 0) && (y - yellow_Pawns[i].getLoc_y()) > 0) )
+			return yellow_Pawns[i].getNum();
+	}
+
+	for (int i = 0; i < green_Pawns.size(); i++)
+	{
+		if (  ((x - green_Pawns[i].getLoc_x() < 37) && (y - green_Pawns[i].getLoc_y()) < 37)  &&  ((x - green_Pawns[i].getLoc_x() > 0) && (y - green_Pawns[i].getLoc_y()) > 0) )
+			return green_Pawns[i].getNum();
+	}
+
+
 	return -1;
 }
 
 }
-
-
 
 
 void MakeBoard() // Makes the brim cells of the playing board
@@ -584,8 +702,23 @@ void pawnSetup()
 	//todo MAKE ALL OF THEM
 	red_Pawns.push_back(Pawns (1, red_Start[0].getLoc_x(), red_Start[0].getLoc_y(), 1, -1));
 	red_Pawns.push_back(Pawns (1, red_Start[1].getLoc_x(), red_Start[1].getLoc_y(), 2, -1));
+	red_Pawns.push_back(Pawns (1, red_Start[2].getLoc_x(), red_Start[2].getLoc_y(), 3, -1));
+	red_Pawns.push_back(Pawns (1, red_Start[3].getLoc_x(), red_Start[3].getLoc_y(), 4, -1));
 
 	blue_Pawns.push_back(Pawns (2, blue_Start[0].getLoc_x(), blue_Start[0].getLoc_y(), 5, -1));
+	blue_Pawns.push_back(Pawns (2, blue_Start[1].getLoc_x(), blue_Start[1].getLoc_y(), 6, -1));
+	blue_Pawns.push_back(Pawns (2, blue_Start[2].getLoc_x(), blue_Start[2].getLoc_y(), 7, -1));
+	blue_Pawns.push_back(Pawns (2, blue_Start[3].getLoc_x(), blue_Start[3].getLoc_y(), 8, -1));
+
+	yellow_Pawns.push_back(Pawns (3, yellow_Start[0].getLoc_x(), yellow_Start[0].getLoc_y(), 9, -1));
+	yellow_Pawns.push_back(Pawns (3, yellow_Start[1].getLoc_x(), yellow_Start[1].getLoc_y(), 10, -1));
+	yellow_Pawns.push_back(Pawns (3, yellow_Start[2].getLoc_x(), yellow_Start[2].getLoc_y(), 11, -1));
+	yellow_Pawns.push_back(Pawns (3, yellow_Start[3].getLoc_x(), yellow_Start[3].getLoc_y(), 12, -1));
+	
+	green_Pawns.push_back(Pawns (4, green_Start[0].getLoc_x(), green_Start[0].getLoc_y(), 13, -1));
+	green_Pawns.push_back(Pawns (4, green_Start[1].getLoc_x(), green_Start[1].getLoc_y(), 14, -1));
+	green_Pawns.push_back(Pawns (4, green_Start[2].getLoc_x(), green_Start[2].getLoc_y(), 15, -1));
+	green_Pawns.push_back(Pawns (4, green_Start[3].getLoc_x(), green_Start[3].getLoc_y(), 16, -1));
 }
 
 

@@ -25,5 +25,6 @@ public:
 	void setLoc_y(int y);
 	void setCol(int num);
 	void setLoc(int num); // Tracks which vector the piece is in.
+	void bump(int num);
 };
 

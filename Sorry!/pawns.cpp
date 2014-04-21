@@ -65,3 +65,8 @@ void Pawns::setLoc(int num)
 {
 	loc = num;
 }
+
+void Pawns::bump(int num)
+{
+
+}
