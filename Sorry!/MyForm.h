@@ -96,6 +96,10 @@ namespace Sorry {
 	private: System::Windows::Forms::Button^  drawCard;
 	private: System::Windows::Forms::NumericUpDown^  cardNum;
 	private: System::Windows::Forms::Button^  makeMove;
+	private: System::Windows::Forms::NumericUpDown^  nudX;
+	private: System::Windows::Forms::NumericUpDown^  nudY;
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Label^  label2;
 	private: System::ComponentModel::IContainer^  components;
 	protected: 
 
@@ -119,8 +123,14 @@ namespace Sorry {
 			this->drawCard = (gcnew System::Windows::Forms::Button());
 			this->cardNum = (gcnew System::Windows::Forms::NumericUpDown());
 			this->makeMove = (gcnew System::Windows::Forms::Button());
+			this->nudX = (gcnew System::Windows::Forms::NumericUpDown());
+			this->nudY = (gcnew System::Windows::Forms::NumericUpDown());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->label2 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pawnNum))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->cardNum))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudX))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudY))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// panel1
@@ -131,6 +141,7 @@ namespace Sorry {
 			this->panel1->Name = L"panel1";
 			this->panel1->Size = System::Drawing::Size(560, 560);
 			this->panel1->TabIndex = 0;
+			this->panel1->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::panel1_MouseMove);
 			this->panel1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::panel1_MouseUp);
 			// 
 			// draw
@@ -172,11 +183,51 @@ namespace Sorry {
 			this->makeMove->UseVisualStyleBackColor = true;
 			this->makeMove->Click += gcnew System::EventHandler(this, &MyForm::makeMove_Click);
 			// 
+			// nudX
+			// 
+			this->nudX->DecimalPlaces = 1;
+			this->nudX->Location = System::Drawing::Point(632, 276);
+			this->nudX->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1000, 0, 0, 0});
+			this->nudX->Name = L"nudX";
+			this->nudX->Size = System::Drawing::Size(75, 20);
+			this->nudX->TabIndex = 5;
+			// 
+			// nudY
+			// 
+			this->nudY->DecimalPlaces = 1;
+			this->nudY->Location = System::Drawing::Point(632, 317);
+			this->nudY->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1000, 0, 0, 0});
+			this->nudY->Name = L"nudY";
+			this->nudY->Size = System::Drawing::Size(75, 20);
+			this->nudY->TabIndex = 6;
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(612, 278);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(14, 13);
+			this->label1->TabIndex = 7;
+			this->label1->Text = L"X";
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(612, 319);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(14, 13);
+			this->label2->TabIndex = 8;
+			this->label2->Text = L"Y";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(775, 560);
+			this->Controls->Add(this->label2);
+			this->Controls->Add(this->label1);
+			this->Controls->Add(this->nudY);
+			this->Controls->Add(this->nudX);
 			this->Controls->Add(this->makeMove);
 			this->Controls->Add(this->cardNum);
 			this->Controls->Add(this->drawCard);
@@ -189,13 +240,17 @@ namespace Sorry {
 			this->Move += gcnew System::EventHandler(this, &MyForm::draw_Tick);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pawnNum))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->cardNum))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudX))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudY))->EndInit();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
 		Graphics ^gp1;
 		Brush ^yellow, ^green, ^blue, ^red;
 		Pen ^black_p;
+		Image ^redPawn, ^bluePawn, ^yellowPawn, ^greenPawn;
 	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
 				 
 				 MakeBoard();
@@ -207,6 +262,12 @@ namespace Sorry {
 				 panel1->Size = System::Drawing::Size(Board+2, Board+2);
 
 				 gp1 = panel1->CreateGraphics();
+
+
+				 redPawn = System::Drawing::Image::FromFile("redPawn.png");
+				 bluePawn = System::Drawing::Image::FromFile("bluePawn.png");
+				 yellowPawn = System::Drawing::Image::FromFile("yellowPawn.png");
+				 greenPawn = System::Drawing::Image::FromFile("greenPawn.png");
 
 				 yellow = gcnew SolidBrush(Color::Yellow);
 				 green = gcnew SolidBrush(Color::Green);
@@ -227,8 +288,8 @@ namespace Sorry {
 					 gp1 -> FillRectangle(convertColor(b[i].getColor()), b[i].getLoc_x()+2, b[i].getLoc_y()+2, CellSize-3,CellSize-3);
 
 
-				 for (int i = 0; i < red_Start.size(); i++)
-					 gp1 -> DrawRectangle(black_p, red_Start[i].getLoc_x(), red_Start[i].getLoc_y(),CellSize,CellSize);
+				 //for (int i = 0; i < red_Start.size(); i++)
+					 //gp1 -> DrawRectangle(black_p, red_Start[i].getLoc_x(), red_Start[i].getLoc_y(),CellSize,CellSize);
 				 for (int i = 0; i < red_Home.size(); i++)
 					 gp1 -> DrawRectangle(black_p, red_Home[i].getLoc_x(), red_Home[i].getLoc_y(),CellSize,CellSize);
 
@@ -254,17 +315,29 @@ namespace Sorry {
 				 //////      PAWNS
 				 //
 
-				 for (int i = 0; i < red_Pawns.size(); i++)
-					 gp1 -> FillRectangle(convertColor(red_Pawns[i].getCol()), red_Pawns[i].getLoc_x()+2, red_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
+				 //for (int i = 0; i < red_Pawns.size(); i++)
+					 //gp1 -> FillRectangle(convertColor(red_Pawns[i].getCol()), red_Pawns[i].getLoc_x()+2, red_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
 
+				 for (int i = 0; i < red_Pawns.size(); i++)
+					 gp1 -> DrawImage(redPawn, red_Pawns[i].getLoc_x()+1, red_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
+
+				 //for (int i = 0; i < blue_Pawns.size(); i++)
+					 //gp1 -> FillRectangle(convertColor(blue_Pawns[i].getCol()), blue_Pawns[i].getLoc_x()+2, blue_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
+				 
 				 for (int i = 0; i < blue_Pawns.size(); i++)
-					 gp1 -> FillRectangle(convertColor(blue_Pawns[i].getCol()), blue_Pawns[i].getLoc_x()+2, blue_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
+					 gp1 -> DrawImage(bluePawn, blue_Pawns[i].getLoc_x()+2, blue_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
+
+				 //for (int i = 0; i < yellow_Pawns.size(); i++)
+					 //gp1 -> FillRectangle(convertColor(yellow_Pawns[i].getCol()), yellow_Pawns[i].getLoc_x()+2, yellow_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
 				 
 				 for (int i = 0; i < yellow_Pawns.size(); i++)
-					 gp1 -> FillRectangle(convertColor(yellow_Pawns[i].getCol()), yellow_Pawns[i].getLoc_x()+2, yellow_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
+					 gp1 -> DrawImage(yellowPawn, yellow_Pawns[i].getLoc_x()+2, yellow_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
 				 
+				 //for (int i = 0; i < green_Pawns.size(); i++)
+					 //gp1 -> FillRectangle(convertColor(green_Pawns[i].getCol()), green_Pawns[i].getLoc_x()+2, green_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
+
 				 for (int i = 0; i < green_Pawns.size(); i++)
-					 gp1 -> FillRectangle(convertColor(green_Pawns[i].getCol()), green_Pawns[i].getLoc_x()+2, green_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
+					 gp1 -> DrawImage(greenPawn, green_Pawns[i].getLoc_x()+2, green_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
 
 
 				 draw -> Enabled = false;
@@ -529,6 +602,10 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 
 			 draw -> Enabled = true;
 		 }
+private: System::Void panel1_MouseMove(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+			 nudX -> Value = (e->X);
+			 nudY -> Value = (e->Y);
+		 }
 };
 
 
@@ -627,9 +704,9 @@ void MakeStart()
 	///////////////////////// RED
 
 	red_Start.push_back(Cell (1, (Board-CellSize*5), (Board-CellSize*2), 0));
-	red_Start.push_back(Cell (1, (Board-CellSize*6)+(CellSize/2), (Board-CellSize*3)+(CellSize/2), 0));
-	red_Start.push_back(Cell (1, (Board-CellSize*5)+(CellSize/2), (Board-CellSize*3)+(CellSize/2), 0));
-	red_Start.push_back(Cell (1, (Board-CellSize*5), (Board-CellSize*3), 0));
+	red_Start.push_back(Cell (1, (Board-CellSize*6)+(CellSize/3)+2, (Board-CellSize*3)+(CellSize/2)-5, 0));
+	red_Start.push_back(Cell (1, (Board-CellSize*5)+(CellSize/1.5)-2, (Board-CellSize*3)+(CellSize/2)-5, 0));
+	red_Start.push_back(Cell (1, (Board-CellSize*5), (Board-CellSize*3)-10, 0));
 
 	red_Home.push_back(Cell (1, (Board-CellSize*3), (Board-CellSize*2), 0));
 	red_Home.push_back(Cell (1, (Board-CellSize*3), (Board-CellSize*3), 0));
@@ -638,16 +715,16 @@ void MakeStart()
 	red_Home.push_back(Cell (1, (Board-CellSize*3), (Board-CellSize*6), 0));
 
 	red_Home.push_back(Cell (1, (Board-CellSize*3), (Board-CellSize*8), 0));
-	red_Home.push_back(Cell (1, (Board-CellSize*4)+(CellSize/2), (Board-CellSize*8)+(CellSize/2), 0));
-	red_Home.push_back(Cell (1, (Board-CellSize*3)+(CellSize/2), (Board-CellSize*8)+(CellSize/2), 0));
-	red_Home.push_back(Cell (1, (Board-CellSize*3), (Board-CellSize*7), 0));
+	red_Home.push_back(Cell (1, (Board-CellSize*4)+(CellSize/3), (Board-CellSize*8)+(CellSize/2), 0));
+	red_Home.push_back(Cell (1, (Board-CellSize*3)+(CellSize/1.5), (Board-CellSize*8)+(CellSize/2), 0));
+	red_Home.push_back(Cell (1, (Board-CellSize*3), (Board-CellSize*7)-4, 0));
 
 	////////////////////////// BLUE
 
 	blue_Start.push_back(Cell (2, (Board-CellSize*15), (Board-CellSize*5), 0));
-	blue_Start.push_back(Cell (2, (Board-CellSize*15)+(CellSize/2), (Board-CellSize*6)+(CellSize/2), 0));
-	blue_Start.push_back(Cell (2, (Board-CellSize*15)+(CellSize/2), (Board-CellSize*5)+(CellSize/2), 0));
-	blue_Start.push_back(Cell (2, (Board-CellSize*14), (Board-CellSize*5), 0));
+	blue_Start.push_back(Cell (2, (Board-CellSize*15)+(CellSize/2)+5, (Board-CellSize*6)+(CellSize/3)+2, 0));
+	blue_Start.push_back(Cell (2, (Board-CellSize*15)+(CellSize/2)+5, (Board-CellSize*5)+(CellSize/1.5)-2, 0));
+	blue_Start.push_back(Cell (2, (Board-CellSize*14)+8, (Board-CellSize*5), 0));
 
 	blue_Home.push_back(Cell (2, (Board-CellSize*15), (Board-CellSize*3), 0));
 	blue_Home.push_back(Cell (2, (Board-CellSize*14), (Board-CellSize*3), 0));
@@ -663,9 +740,9 @@ void MakeStart()
 	////////////////////////// YELLOW
 
 	yellow_Start.push_back(Cell (3, (Board-CellSize*12), (Board-CellSize*15), 0));
-	yellow_Start.push_back(Cell (3, (Board-CellSize*13)+(CellSize/2), (Board-CellSize*15)+(CellSize/2), 0));
-	yellow_Start.push_back(Cell (3, (Board-CellSize*12)+(CellSize/2), (Board-CellSize*15)+(CellSize/2), 0));
-	yellow_Start.push_back(Cell (3, (Board-CellSize*12), (Board-CellSize*14), 0));
+	yellow_Start.push_back(Cell (3, (Board-CellSize*13)+(CellSize/3), (Board-CellSize*15)+(CellSize/2)+2, 0));
+	yellow_Start.push_back(Cell (3, (Board-CellSize*12)+(CellSize/1.5), (Board-CellSize*15)+(CellSize/2)+2, 0));
+	yellow_Start.push_back(Cell (3, (Board-CellSize*12), (Board-CellSize*14)+5, 0));
 
 	yellow_Home.push_back(Cell (3, (Board-CellSize*14), (Board-CellSize*15), 0));
 	yellow_Home.push_back(Cell (3, (Board-CellSize*14), (Board-CellSize*14), 0));
@@ -681,9 +758,9 @@ void MakeStart()
 	////////////////////////// GREEN
 
 	green_Start.push_back(Cell (4, (Board-CellSize*2), (Board-CellSize*12), 0));
-	green_Start.push_back(Cell (4, (Board-CellSize*3)+(CellSize/2), (Board-CellSize*13)+(CellSize/2), 0));
-	green_Start.push_back(Cell (4, (Board-CellSize*3)+(CellSize/2), (Board-CellSize*12)+(CellSize/2), 0));
-	green_Start.push_back(Cell (4, (Board-CellSize*3), (Board-CellSize*12), 0));
+	green_Start.push_back(Cell (4, (Board-CellSize*3)+(CellSize/2)-2, (Board-CellSize*13)+(CellSize/3), 0));
+	green_Start.push_back(Cell (4, (Board-CellSize*3)+(CellSize/2)-2, (Board-CellSize*12)+(CellSize/1.5), 0));
+	green_Start.push_back(Cell (4, (Board-CellSize*3)-7, (Board-CellSize*12), 0));
 
 	green_Home.push_back(Cell (4, (Board-CellSize*2), (Board-CellSize*14), 0));
 	green_Home.push_back(Cell (4, (Board-CellSize*3), (Board-CellSize*14), 0));
