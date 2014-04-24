@@ -117,6 +117,7 @@ namespace Sorry {
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->draw = (gcnew System::Windows::Forms::Timer(this->components));
 			this->pawnNum = (gcnew System::Windows::Forms::NumericUpDown());
@@ -136,6 +137,7 @@ namespace Sorry {
 			// panel1
 			// 
 			this->panel1->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+			this->panel1->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"panel1.BackgroundImage")));
 			this->panel1->Dock = System::Windows::Forms::DockStyle::Left;
 			this->panel1->Location = System::Drawing::Point(0, 0);
 			this->panel1->Name = L"panel1";
@@ -281,32 +283,32 @@ namespace Sorry {
 
 			 }
 	private: System::Void draw_Tick(System::Object^  sender, System::EventArgs^  e) {
-				 for (int i = 0; i < b.size(); i++)
-					 gp1 -> DrawRectangle(black_p,b[i].getLoc_x(),b[i].getLoc_y(),CellSize,CellSize);
+				 //for (int i = 0; i < b.size(); i++)
+					// gp1 -> DrawRectangle(black_p,b[i].getLoc_x(),b[i].getLoc_y(),CellSize,CellSize);
 
-				 for (int i = 0; i < b.size(); i++)
-					 gp1 -> FillRectangle(convertColor(b[i].getColor()), b[i].getLoc_x()+2, b[i].getLoc_y()+2, CellSize-3,CellSize-3);
+				 //for (int i = 0; i < b.size(); i++)
+					// gp1 -> FillRectangle(convertColor(b[i].getColor()), b[i].getLoc_x()+2, b[i].getLoc_y()+2, CellSize-3,CellSize-3);
 
 
-				 //for (int i = 0; i < red_Start.size(); i++)
-					 //gp1 -> DrawRectangle(black_p, red_Start[i].getLoc_x(), red_Start[i].getLoc_y(),CellSize,CellSize);
-				 for (int i = 0; i < red_Home.size(); i++)
-					 gp1 -> DrawRectangle(black_p, red_Home[i].getLoc_x(), red_Home[i].getLoc_y(),CellSize,CellSize);
+				 ////for (int i = 0; i < red_Start.size(); i++)
+					// //gp1 -> DrawRectangle(black_p, red_Start[i].getLoc_x(), red_Start[i].getLoc_y(),CellSize,CellSize);
+				 //for (int i = 0; i < red_Home.size(); i++)
+					// gp1 -> DrawRectangle(black_p, red_Home[i].getLoc_x(), red_Home[i].getLoc_y(),CellSize,CellSize);
 
-				 for (int i = 0; i < blue_Start.size(); i++)
-					 gp1 -> DrawRectangle(black_p, blue_Start[i].getLoc_x(), blue_Start[i].getLoc_y(),CellSize,CellSize);
-				 for (int i = 0; i < blue_Home.size(); i++)
-					 gp1 -> DrawRectangle(black_p, blue_Home[i].getLoc_x(), blue_Home[i].getLoc_y(),CellSize,CellSize);
+				 //for (int i = 0; i < blue_Start.size(); i++)
+					// gp1 -> DrawRectangle(black_p, blue_Start[i].getLoc_x(), blue_Start[i].getLoc_y(),CellSize,CellSize);
+				 //for (int i = 0; i < blue_Home.size(); i++)
+					// gp1 -> DrawRectangle(black_p, blue_Home[i].getLoc_x(), blue_Home[i].getLoc_y(),CellSize,CellSize);
 
-				 for (int i = 0; i < yellow_Start.size(); i++)
-					 gp1 -> DrawRectangle(black_p, yellow_Start[i].getLoc_x(), yellow_Start[i].getLoc_y(),CellSize,CellSize);
-				 for (int i = 0; i < yellow_Home.size(); i++)
-					 gp1 -> DrawRectangle(black_p, yellow_Home[i].getLoc_x(), yellow_Home[i].getLoc_y(), CellSize,CellSize);
+				 //for (int i = 0; i < yellow_Start.size(); i++)
+					// gp1 -> DrawRectangle(black_p, yellow_Start[i].getLoc_x(), yellow_Start[i].getLoc_y(),CellSize,CellSize);
+				 //for (int i = 0; i < yellow_Home.size(); i++)
+					// gp1 -> DrawRectangle(black_p, yellow_Home[i].getLoc_x(), yellow_Home[i].getLoc_y(), CellSize,CellSize);
 
-				 for (int i = 0; i < green_Start.size(); i++)
-					 gp1 -> DrawRectangle(black_p, green_Start[i].getLoc_x(), green_Start[i].getLoc_y(),CellSize,CellSize);
-				 for (int i = 0; i < green_Home.size(); i++)
-					 gp1 -> DrawRectangle(black_p, green_Home[i].getLoc_x(), green_Home[i].getLoc_y(), CellSize,CellSize);
+				 //for (int i = 0; i < green_Start.size(); i++)
+					// gp1 -> DrawRectangle(black_p, green_Start[i].getLoc_x(), green_Start[i].getLoc_y(),CellSize,CellSize);
+				 //for (int i = 0; i < green_Home.size(); i++)
+					// gp1 -> DrawRectangle(black_p, green_Home[i].getLoc_x(), green_Home[i].getLoc_y(), CellSize,CellSize);
 
 
 				 //TODO, GET rid of all the shit above this todo. ie get bg picture
