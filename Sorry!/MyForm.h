@@ -266,10 +266,10 @@ namespace Sorry {
 				 gp1 = panel1->CreateGraphics();
 
 
-				 redPawn = System::Drawing::Image::FromFile("redPawn.png");
-				 bluePawn = System::Drawing::Image::FromFile("bluePawn.png");
-				 yellowPawn = System::Drawing::Image::FromFile("yellowPawn.png");
-				 greenPawn = System::Drawing::Image::FromFile("greenPawn.png");
+				 redPawn = System::Drawing::Image::FromFile("images\\redPawn.png");
+				 bluePawn = System::Drawing::Image::FromFile("images\\bluePawn.png");
+				 yellowPawn = System::Drawing::Image::FromFile("images\\yellowPawn.png");
+				 greenPawn = System::Drawing::Image::FromFile("images\\greenPawn.png");
 
 				 yellow = gcnew SolidBrush(Color::Yellow);
 				 green = gcnew SolidBrush(Color::Green);
