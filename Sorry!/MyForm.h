@@ -382,29 +382,29 @@ private: System::Void bump(System::Object^  sender, System::EventArgs^  e){
 		 
 		
 
-			 if (pawn_number >= 0 && pawn_number < 4)
+			 if (pawn_number >= 1 && pawn_number < 5)
 			 {
 				 red_Pawns[pawn_number-1].setLoc(-1);
 				 red_Pawns[pawn_number-1].setLoc_x( red_Start[pawn_number-1].getLoc_x() );
 				 red_Pawns[pawn_number-1].setLoc_y( red_Start[pawn_number-1].getLoc_y() );
 			 }
-			 else if (pawn_number >= 4 && pawn_number < 8)
+			 else if (pawn_number >= 5 && pawn_number < 9)
 			 {
-				 blue_Pawns[pawn_number-1].setLoc(-1);
-				 blue_Pawns[pawn_number-1].setLoc_x( blue_Start[pawn_number-1].getLoc_x() );
-				 blue_Pawns[pawn_number-1].setLoc_y( blue_Start[pawn_number-1].getLoc_y() );
+				 blue_Pawns[pawn_number-5].setLoc(-1);
+				 blue_Pawns[pawn_number-5].setLoc_x( blue_Start[pawn_number-5].getLoc_x() );
+				 blue_Pawns[pawn_number-5].setLoc_y( blue_Start[pawn_number-5].getLoc_y() );
 			 }
-			 else if (pawn_number >= 8 && pawn_number < 12)
+			 else if (pawn_number >= 9 && pawn_number < 13)
 			 {
-				 yellow_Pawns[pawn_number-1].setLoc(-1);
-				 yellow_Pawns[pawn_number-1].setLoc_x( yellow_Start[pawn_number-1].getLoc_x() );
-				 yellow_Pawns[pawn_number-1].setLoc_y( yellow_Start[pawn_number-1].getLoc_y() );
+				 yellow_Pawns[pawn_number-9].setLoc(-1);
+				 yellow_Pawns[pawn_number-9].setLoc_x( yellow_Start[pawn_number-9].getLoc_x() );
+				 yellow_Pawns[pawn_number-9].setLoc_y( yellow_Start[pawn_number-9].getLoc_y() );
 			 }
-			 else if (pawn_number >= 12 && pawn_number < 16)
+			 else if (pawn_number >= 13 && pawn_number < 17)
 			 {
-				 green_Pawns[pawn_number-1].setLoc(-1);
-				 green_Pawns[pawn_number-1].setLoc_x( yellow_Start[pawn_number-1].getLoc_x() );
-				 green_Pawns[pawn_number-1].setLoc_y( yellow_Start[pawn_number-1].getLoc_y() );
+				 green_Pawns[pawn_number-13].setLoc(-1);
+				 green_Pawns[pawn_number-13].setLoc_x( green_Start[pawn_number-13].getLoc_x() );
+				 green_Pawns[pawn_number-13].setLoc_y( green_Start[pawn_number-13].getLoc_y() );
 			 }
 			 draw -> Enabled = true;
 		 
