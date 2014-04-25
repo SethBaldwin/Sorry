@@ -100,6 +100,7 @@ namespace Sorry {
 	private: System::Windows::Forms::NumericUpDown^  nudY;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::Button^  button1;
 	private: System::ComponentModel::IContainer^  components;
 	protected: 
 
@@ -128,6 +129,7 @@ namespace Sorry {
 			this->nudY = (gcnew System::Windows::Forms::NumericUpDown());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pawnNum))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->cardNum))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudX))->BeginInit();
@@ -221,11 +223,22 @@ namespace Sorry {
 			this->label2->TabIndex = 8;
 			this->label2->Text = L"Y";
 			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(617, 362);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(105, 35);
+			this->button1->TabIndex = 9;
+			this->button1->Text = L"Bump!";
+			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &MyForm::bump);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(775, 560);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->nudY);
@@ -365,6 +378,37 @@ namespace Sorry {
 				 draw -> Enabled = true;
 
 			 }
+private: System::Void bump(System::Object^  sender, System::EventArgs^  e){
+		 
+		
+
+			 if (pawn_number >= 0 && pawn_number < 4)
+			 {
+				 red_Pawns[pawn_number-1].setLoc(-1);
+				 red_Pawns[pawn_number-1].setLoc_x( red_Start[pawn_number-1].getLoc_x() );
+				 red_Pawns[pawn_number-1].setLoc_y( red_Start[pawn_number-1].getLoc_y() );
+			 }
+			 else if (pawn_number >= 4 && pawn_number < 8)
+			 {
+				 blue_Pawns[pawn_number-1].setLoc(-1);
+				 blue_Pawns[pawn_number-1].setLoc_x( blue_Start[pawn_number-1].getLoc_x() );
+				 blue_Pawns[pawn_number-1].setLoc_y( blue_Start[pawn_number-1].getLoc_y() );
+			 }
+			 else if (pawn_number >= 8 && pawn_number < 12)
+			 {
+				 yellow_Pawns[pawn_number-1].setLoc(-1);
+				 yellow_Pawns[pawn_number-1].setLoc_x( yellow_Start[pawn_number-1].getLoc_x() );
+				 yellow_Pawns[pawn_number-1].setLoc_y( yellow_Start[pawn_number-1].getLoc_y() );
+			 }
+			 else if (pawn_number >= 12 && pawn_number < 16)
+			 {
+				 green_Pawns[pawn_number-1].setLoc(-1);
+				 green_Pawns[pawn_number-1].setLoc_x( yellow_Start[pawn_number-1].getLoc_x() );
+				 green_Pawns[pawn_number-1].setLoc_y( yellow_Start[pawn_number-1].getLoc_y() );
+			 }
+			 draw -> Enabled = true;
+		 
+		 }
 
 private: System::Void drawCard_Click(System::Object^  sender, System::EventArgs^  e) {
 			 
