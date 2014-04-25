@@ -296,61 +296,24 @@ namespace Sorry {
 
 			 }
 	private: System::Void draw_Tick(System::Object^  sender, System::EventArgs^  e) {
-				 //for (int i = 0; i < b.size(); i++)
-					// gp1 -> DrawRectangle(black_p,b[i].getLoc_x(),b[i].getLoc_y(),CellSize,CellSize);
-
-				 //for (int i = 0; i < b.size(); i++)
-					// gp1 -> FillRectangle(convertColor(b[i].getColor()), b[i].getLoc_x()+2, b[i].getLoc_y()+2, CellSize-3,CellSize-3);
-
-
-				 ////for (int i = 0; i < red_Start.size(); i++)
-					// //gp1 -> DrawRectangle(black_p, red_Start[i].getLoc_x(), red_Start[i].getLoc_y(),CellSize,CellSize);
-				 //for (int i = 0; i < red_Home.size(); i++)
-					// gp1 -> DrawRectangle(black_p, red_Home[i].getLoc_x(), red_Home[i].getLoc_y(),CellSize,CellSize);
-
-				 //for (int i = 0; i < blue_Start.size(); i++)
-					// gp1 -> DrawRectangle(black_p, blue_Start[i].getLoc_x(), blue_Start[i].getLoc_y(),CellSize,CellSize);
-				 //for (int i = 0; i < blue_Home.size(); i++)
-					// gp1 -> DrawRectangle(black_p, blue_Home[i].getLoc_x(), blue_Home[i].getLoc_y(),CellSize,CellSize);
-
-				 //for (int i = 0; i < yellow_Start.size(); i++)
-					// gp1 -> DrawRectangle(black_p, yellow_Start[i].getLoc_x(), yellow_Start[i].getLoc_y(),CellSize,CellSize);
-				 //for (int i = 0; i < yellow_Home.size(); i++)
-					// gp1 -> DrawRectangle(black_p, yellow_Home[i].getLoc_x(), yellow_Home[i].getLoc_y(), CellSize,CellSize);
-
-				 //for (int i = 0; i < green_Start.size(); i++)
-					// gp1 -> DrawRectangle(black_p, green_Start[i].getLoc_x(), green_Start[i].getLoc_y(),CellSize,CellSize);
-				 //for (int i = 0; i < green_Home.size(); i++)
-					// gp1 -> DrawRectangle(black_p, green_Home[i].getLoc_x(), green_Home[i].getLoc_y(), CellSize,CellSize);
-
-
-				 //TODO, GET rid of all the shit above this todo. ie get bg picture
 
 				 //
 				 //////      PAWNS
 				 //
 
-				 //for (int i = 0; i < red_Pawns.size(); i++)
-					 //gp1 -> FillRectangle(convertColor(red_Pawns[i].getCol()), red_Pawns[i].getLoc_x()+2, red_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
+				 Refresh();// TODO
+
+				 //TODO show pawns moving every space
 
 				 for (int i = 0; i < red_Pawns.size(); i++)
 					 gp1 -> DrawImage(redPawn, red_Pawns[i].getLoc_x()+1, red_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
 
-				 //for (int i = 0; i < blue_Pawns.size(); i++)
-					 //gp1 -> FillRectangle(convertColor(blue_Pawns[i].getCol()), blue_Pawns[i].getLoc_x()+2, blue_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
-				 
 				 for (int i = 0; i < blue_Pawns.size(); i++)
 					 gp1 -> DrawImage(bluePawn, blue_Pawns[i].getLoc_x()+2, blue_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
 
-				 //for (int i = 0; i < yellow_Pawns.size(); i++)
-					 //gp1 -> FillRectangle(convertColor(yellow_Pawns[i].getCol()), yellow_Pawns[i].getLoc_x()+2, yellow_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
-				 
 				 for (int i = 0; i < yellow_Pawns.size(); i++)
 					 gp1 -> DrawImage(yellowPawn, yellow_Pawns[i].getLoc_x()+2, yellow_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
 				 
-				 //for (int i = 0; i < green_Pawns.size(); i++)
-					 //gp1 -> FillRectangle(convertColor(green_Pawns[i].getCol()), green_Pawns[i].getLoc_x()+2, green_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
-
 				 for (int i = 0; i < green_Pawns.size(); i++)
 					 gp1 -> DrawImage(greenPawn, green_Pawns[i].getLoc_x()+2, green_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
 
@@ -426,7 +389,11 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 
 			 //needs to check if a pawn is selected at all.
 
-			 if (pawn_number >= 0 && pawn_number < 4)
+			 //
+			 //////////////////////////////// RED //////////////////////////////////
+			 //
+
+			 if (pawn_number >= 1 && pawn_number < 5)
 			 {
 				 int rpl = red_Pawns[pawn_number-1].getLoc(); //So i dont have to type that out every time.
 
@@ -438,12 +405,12 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 				 {
 					 if (card_number <= 2) // Pawn can only leave if a 1 or 2 is drawn.
 					 {
-						 for (int i = 0; i < card_number; i++)
+						 for (int i = 1; i <= card_number; i++)// Continue for other colors
 						 {
-							 red_Pawns[pawn_number-1].setLoc_x( b[i+4].getLoc_x() );
-							 red_Pawns[pawn_number-1].setLoc_y( b[i+4].getLoc_y() );
+							 red_Pawns[pawn_number-1].setLoc_x( b[i+3].getLoc_x() );// Continue for other colors
+							 red_Pawns[pawn_number-1].setLoc_y( b[i+3].getLoc_y() );// Continue for other colors
 						 }
-						 red_Pawns[pawn_number-1].setLoc(card_number+4);
+						 red_Pawns[pawn_number-1].setLoc(card_number+3);// Continue for other colors
 						 //Todo isOccupied
 					 }
 					 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
@@ -462,8 +429,8 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 							 red_Pawns[pawn_number-1].setLoc_y( b[rpl+i].getLoc_y() );
 							 //Todo IsSlide, Is Occupied
 						 }
-						 int tempPawnLocation = 0;
-						 for (int i = 0; i < card_number-(59-rpl)-1; i++) // -1 because vector begins at 0
+						 int tempPawnLocation = -1;
+						 for (int i = 0; i < card_number-(59-rpl); i++) // -1 because vector begins at 0  // Continue for other colors and removed -1
 						 {
 							 red_Pawns[pawn_number-1].setLoc_x( b[i].getLoc_x() );
 							 red_Pawns[pawn_number-1].setLoc_y( b[i].getLoc_y() );
@@ -472,19 +439,19 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 							 
 						 }
 
-					 //Todo IsSlide -> which slide it is, and move accordingly and bump all non-teammate pawns
-					 //Todo Is Occupied -> Bump(send other piece start) 
-					 red_Pawns[pawn_number-1].setLoc(tempPawnLocation);
+						 //Todo IsSlide -> which slide it is, and move accordingly and bump all non-teammate pawns
+						 //Todo Is Occupied -> Bump(send other piece start) 
+						 red_Pawns[pawn_number-1].setLoc(tempPawnLocation);
 					 }
 
 					 else
 					 {
-						 for (int i = 0; i < card_number; i++)
+						 for (int i = 1; i <= card_number; i++)// Continue for other colors
 						 {
 							 red_Pawns[pawn_number-1].setLoc_x( b[rpl+i].getLoc_x() );
 							 red_Pawns[pawn_number-1].setLoc_y( b[rpl+i].getLoc_y() );
 						 }
-					 red_Pawns[pawn_number-1].setLoc(rpl+card_number);
+						 red_Pawns[pawn_number-1].setLoc(rpl+card_number);
 					 }
 
 				 }
@@ -493,7 +460,7 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 			 //
 			 //////////////////////////////// BLUE //////////////////////////////////
 			 //
-			 else if (pawn_number >= 4 && pawn_number < 8)
+			 else if (pawn_number >= 5 && pawn_number < 9)
 			 {
 				 int bpl = blue_Pawns[pawn_number-5].getLoc(); //So i dont have to type that out every time.
 
@@ -501,94 +468,104 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 				 {
 					 if (card_number <= 2) // Pawn can only leave if a 1 or 2 is drawn.
 					 {
-						 for (int i = 0; i < card_number; i++)
+						 for (int i = 1; i <= card_number; i++)
 						 {
-							 blue_Pawns[pawn_number-5].setLoc_x( b[i+19].getLoc_x() ); // + 19 because 1st space out of blue start is b[19].
-							 blue_Pawns[pawn_number-5].setLoc_y( b[i+19].getLoc_y() );
+							 blue_Pawns[pawn_number-5].setLoc_x( b[i+18].getLoc_x() ); // + 18 because 1st space out of blue start is b[19].
+							 blue_Pawns[pawn_number-5].setLoc_y( b[i+18].getLoc_y() );
 						 }
-						 blue_Pawns[pawn_number-5].setLoc(card_number+19);
+						 blue_Pawns[pawn_number-5].setLoc(card_number+18);
 					 }
 					 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
 				 }
-
-				 else if (blue_Pawns[pawn_number-4].getLoc() >= 0)
+				 //
+				 // For Going around brim of board
+				 //
+				 else if (blue_Pawns[pawn_number-5].getLoc() >= 0)
 				 {
 					 if (bpl+card_number > 59)
 					 {
 						 for (int i = 0; i < (59-bpl); i++)
 						 {
-							 blue_Pawns[pawn_number-4].setLoc_x( b[bpl+i].getLoc_x() );
-							 blue_Pawns[pawn_number-4].setLoc_y( b[bpl+i].getLoc_y() );
+							 blue_Pawns[pawn_number-5].setLoc_x( b[bpl+i].getLoc_x() );
+							 blue_Pawns[pawn_number-5].setLoc_y( b[bpl+i].getLoc_y() );
+							 //Todo IsSlide, Is Occupied
 						 }
-						 int tempPawnLocation = 0;
-						 for (int i = 0; i < card_number-(59-bpl)-1; i++) // -1 because vector begins at 0
+						 int tempPawnLocation = -1;
+						 for (int i = 0; i < card_number-(59-bpl); i++) // -1 because vector begins at 0
 						 {
-							 blue_Pawns[pawn_number-4].setLoc_x( b[i].getLoc_x() );
-							 blue_Pawns[pawn_number-4].setLoc_y( b[i].getLoc_y() );
+							 blue_Pawns[pawn_number-5].setLoc_x( b[i].getLoc_x() );
+							 blue_Pawns[pawn_number-5].setLoc_y( b[i].getLoc_y() );
 							 tempPawnLocation++;
+							 //Todo IsSafe -> So set pawn vector Location = -2 
 						 }
-					 blue_Pawns[pawn_number-4].setLoc(tempPawnLocation);
+					 //Todo IsSlide -> which slide it is, and move accordingly and bump all non-teammate pawns
+					 //Todo Is Occupied -> Bump(send other piece start) 
+					 blue_Pawns[pawn_number-5].setLoc(tempPawnLocation);
 					 }
 
 					 else
 					 {
-						 for (int i = 0; i < card_number; i++)
+						 for (int i = 1; i <= card_number; i++)
 						 {
-							 blue_Pawns[pawn_number-4].setLoc_x( b[bpl+i].getLoc_x() );
-							 blue_Pawns[pawn_number-4].setLoc_y( b[bpl+i].getLoc_y() );
+							 blue_Pawns[pawn_number-5].setLoc_x( b[bpl+i].getLoc_x() );
+							 blue_Pawns[pawn_number-5].setLoc_y( b[bpl+i].getLoc_y() );
 						 }
-					 blue_Pawns[pawn_number-4].setLoc(bpl+card_number);
+					 blue_Pawns[pawn_number-5].setLoc(bpl+card_number);
 					 }
 				 }
 			 }
 			 //
 			 ////////////////// YELLOW //////////////////////
 			 //
-			 else if (pawn_number >= 8 && pawn_number < 12)
+			 else if (pawn_number >= 9 && pawn_number < 13)
 			 {
-				 int gpl = yellow_Pawns[pawn_number-8].getLoc(); //So i dont have to type that out every time.
+				 int gpl = yellow_Pawns[pawn_number-9].getLoc(); //So i dont have to type that out every time.
 
-				 if (yellow_Pawns[pawn_number-8].getLoc() == -1)// For exiting Start
+				 if (yellow_Pawns[pawn_number-9].getLoc() == -1)// For exiting Start
 				 {
 					 if (card_number <= 2) // Pawn can only leave if a 1 or 2 is drawn.
 					 {
-						 for (int i = 0; i < card_number; i++)
+						 for (int i = 1; i <= card_number; i++)
 						 {
-							 yellow_Pawns[pawn_number-8].setLoc_x( b[i+34].getLoc_x() ); // + 19 because 1st space out of yellow start is b[19].
-							 yellow_Pawns[pawn_number-8].setLoc_y( b[i+34].getLoc_y() );
+							 yellow_Pawns[pawn_number-9].setLoc_x( b[i+33].getLoc_x() ); // + 33 because 1st space out of yellow start is b[19].
+							 yellow_Pawns[pawn_number-9].setLoc_y( b[i+33].getLoc_y() );
 						 }
-						 yellow_Pawns[pawn_number-8].setLoc(card_number+34);
+						 yellow_Pawns[pawn_number-9].setLoc(card_number+33);
 					 }
 					 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
 				 }
 
-				 else if (yellow_Pawns[pawn_number-8].getLoc() >= 0)
+				 else if (yellow_Pawns[pawn_number-9].getLoc() >= 0)
 				 {
 					 if (gpl+card_number > 59)
 					 {
 						 for (int i = 0; i < (59-gpl); i++)
 						 {
-							 yellow_Pawns[pawn_number-8].setLoc_x( b[gpl+i].getLoc_x() );
-							 yellow_Pawns[pawn_number-8].setLoc_y( b[gpl+i].getLoc_y() );
+							 yellow_Pawns[pawn_number-9].setLoc_x( b[gpl+i].getLoc_x() );
+							 yellow_Pawns[pawn_number-9].setLoc_y( b[gpl+i].getLoc_y() );
+							 //Todo IsSlide, Is Occupied
 						 }
-						 int tempPawnLocation = 0;
-						 for (int i = 0; i < card_number-(59-gpl)-1; i++) // -1 because vector begins at 0
+						 int tempPawnLocation = -1;
+						 for (int i = 0; i < card_number-(59-gpl); i++) // -1 because vector begins at 0
 						 {
-							 yellow_Pawns[pawn_number-8].setLoc_x( b[i].getLoc_x() );
-							 yellow_Pawns[pawn_number-8].setLoc_y( b[i].getLoc_y() );
+							 yellow_Pawns[pawn_number-9].setLoc_x( b[i].getLoc_x() );
+							 yellow_Pawns[pawn_number-9].setLoc_y( b[i].getLoc_y() );
 							 tempPawnLocation++;
+							 //Todo IsSafe -> So set pawn vector Location = -2 
 						 }
-					 yellow_Pawns[pawn_number-8].setLoc(tempPawnLocation);
+						 //Todo IsSlide -> which slide it is, and move accordingly and bump all non-teammate pawns
+						 //Todo Is Occupied -> Bump(send other piece start)
+						 yellow_Pawns[pawn_number-9].setLoc(tempPawnLocation);
 					 }
 
 					 else
 					 {
-						 for (int i = 0; i < card_number; i++)
+						 for (int i = 1; i <= card_number; i++)
 						 {
-							 yellow_Pawns[pawn_number-8].setLoc_x( b[gpl+i].getLoc_x() );
-							 yellow_Pawns[pawn_number-8].setLoc_y( b[gpl+i].getLoc_y() );
+							 yellow_Pawns[pawn_number-9].setLoc_x( b[gpl+i].getLoc_x() );
+							 yellow_Pawns[pawn_number-9].setLoc_y( b[gpl+i].getLoc_y() );
 						 }
-					 yellow_Pawns[pawn_number-8].setLoc(gpl+card_number);
+						 yellow_Pawns[pawn_number-9].setLoc(gpl+card_number);
 					 }
 				 }
 			 }
@@ -603,12 +580,12 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 				 {
 					 if (card_number <= 2) // Pawn can only leave if a 1 or 2 is drawn.
 					 {
-						 for (int i = 0; i < card_number; i++)
+						 for (int i = 1; i <= card_number; i++)
 						 {
-							 green_Pawns[pawn_number-13].setLoc_x( b[i+49].getLoc_x() ); // + 19 because 1st space out of green start is b[19].
-							 green_Pawns[pawn_number-13].setLoc_y( b[i+49].getLoc_y() );
+							 green_Pawns[pawn_number-13].setLoc_x( b[i+48].getLoc_x() ); // + 19 because 1st space out of green start is b[19].
+							 green_Pawns[pawn_number-13].setLoc_y( b[i+48].getLoc_y() );
 						 }
-						 green_Pawns[pawn_number-13].setLoc(card_number+49);
+						 green_Pawns[pawn_number-13].setLoc(card_number+48);
 					 }
 					 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
 				 }
@@ -622,8 +599,8 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 							 green_Pawns[pawn_number-13].setLoc_x( b[gpl+i].getLoc_x() );
 							 green_Pawns[pawn_number-13].setLoc_y( b[gpl+i].getLoc_y() );
 						 }
-						 int tempPawnLocation = 0;
-						 for (int i = 0; i < card_number-(59-gpl)-1; i++) // -1 because vector begins at 0
+						 int tempPawnLocation = -1;
+						 for (int i = 0; i < card_number-(59-gpl); i++) // -1 because vector begins at 0
 						 {
 							 green_Pawns[pawn_number-13].setLoc_x( b[i].getLoc_x() );
 							 green_Pawns[pawn_number-13].setLoc_y( b[i].getLoc_y() );
@@ -634,7 +611,7 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 
 					 else
 					 {
-						 for (int i = 0; i < card_number; i++)
+						 for (int i = 1; i <= card_number; i++)
 						 {
 							 green_Pawns[pawn_number-13].setLoc_x( b[gpl+i].getLoc_x() );
 							 green_Pawns[pawn_number-13].setLoc_y( b[gpl+i].getLoc_y() );
@@ -851,3 +828,15 @@ void makeDeck()
 	cardInts.assign(cr, cr + sizeof cr / sizeof cr[0]);
 	random_shuffle( cardInts.begin(), cardInts.end() );
 }
+
+//1. Title Page
+//		subtitle description
+//		contributors
+//2. Description of project
+//		goals
+//		what it has
+//3. Results
+//4. Interesting technical aspects
+//		specific problems and how they were delt with
+//5. Slides of game
+//6. What did we learn
