@@ -9,7 +9,6 @@
 using namespace std;
 
 
-
 int Board = 592; // Must be Divisible by 16. Cur = 592
 int CellSize = Board/16; // = 37
 
@@ -63,6 +62,8 @@ namespace Sorry {
 	int getPawn(int, int);
 	int getCell(int, int);
 	Brush ^convertColor(int); //----------
+	bool isSafe();
+	bool isSafe(int);
 
 	/// <summary>
 	/// Summary for MyForm
@@ -101,6 +102,8 @@ namespace Sorry {
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Button^  button1;
+	private: System::Windows::Forms::NumericUpDown^  nudPwnNum;
+	private: System::Windows::Forms::Label^  label3;
 	private: System::ComponentModel::IContainer^  components;
 	protected: 
 
@@ -130,10 +133,13 @@ namespace Sorry {
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->nudPwnNum = (gcnew System::Windows::Forms::NumericUpDown());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pawnNum))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->cardNum))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudX))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudY))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudPwnNum))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// panel1
@@ -143,7 +149,7 @@ namespace Sorry {
 			this->panel1->Dock = System::Windows::Forms::DockStyle::Left;
 			this->panel1->Location = System::Drawing::Point(0, 0);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(560, 560);
+			this->panel1->Size = System::Drawing::Size(593, 594);
 			this->panel1->TabIndex = 0;
 			this->panel1->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::panel1_MouseMove);
 			this->panel1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::panel1_MouseUp);
@@ -166,7 +172,7 @@ namespace Sorry {
 			this->drawCard->Name = L"drawCard";
 			this->drawCard->Size = System::Drawing::Size(105, 31);
 			this->drawCard->TabIndex = 2;
-			this->drawCard->Text = L"Draw";
+			this->drawCard->Text = L"Draw Card";
 			this->drawCard->UseVisualStyleBackColor = true;
 			this->drawCard->Click += gcnew System::EventHandler(this, &MyForm::drawCard_Click);
 			// 
@@ -233,11 +239,32 @@ namespace Sorry {
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::bump);
 			// 
+			// nudPwnNum
+			// 
+			this->nudPwnNum->Location = System::Drawing::Point(632, 509);
+			this->nudPwnNum->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {120, 0, 0, 0});
+			this->nudPwnNum->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {2, 0, 0, System::Int32::MinValue});
+			this->nudPwnNum->Name = L"nudPwnNum";
+			this->nudPwnNum->Size = System::Drawing::Size(50, 20);
+			this->nudPwnNum->TabIndex = 10;
+			this->nudPwnNum->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(614, 493);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(78, 13);
+			this->label3->TabIndex = 11;
+			this->label3->Text = L"Red Pawn Loc";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(775, 560);
+			this->ClientSize = System::Drawing::Size(784, 594);
+			this->Controls->Add(this->label3);
+			this->Controls->Add(this->nudPwnNum);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
@@ -252,11 +279,11 @@ namespace Sorry {
 			this->Name = L"MyForm";
 			this->Text = L"Sorry!";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
-			this->Move += gcnew System::EventHandler(this, &MyForm::draw_Tick);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pawnNum))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->cardNum))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudX))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudY))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudPwnNum))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -293,6 +320,7 @@ namespace Sorry {
 
 
 				 draw -> Enabled = true;
+
 
 			 }
 	private: System::Void draw_Tick(System::Object^  sender, System::EventArgs^  e) {
@@ -387,7 +415,9 @@ private: System::Void drawCard_Click(System::Object^  sender, System::EventArgs^
 private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^  e) {
 			 //IF for 4 colors.
 
+
 			 //needs to check if a pawn is selected at all.
+
 
 			 //
 			 //////////////////////////////// RED //////////////////////////////////
@@ -396,7 +426,6 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 			 if (pawn_number >= 1 && pawn_number < 5)
 			 {
 				 int rpl = red_Pawns[pawn_number-1].getLoc(); //So i dont have to type that out every time.
-
 
 				 //
 				 //  FOR LEAVING START
@@ -418,7 +447,8 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 				 //
 				 // For Going around brim of board
 				 //
-				 else if (red_Pawns[pawn_number-1].getLoc() >= 0)
+
+				 else if (red_Pawns[pawn_number-1].getLoc() >= 0 && red_Pawns[pawn_number-1].getLoc() < 60)
 				 {
 					 if (rpl+card_number > 59)
 					 {
@@ -429,33 +459,84 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 							 red_Pawns[pawn_number-1].setLoc_y( b[rpl+i].getLoc_y() );
 							 //Todo IsSlide, Is Occupied
 						 }
+
 						 int tempPawnLocation = -1;
+						 int iC = 0; // The counter used for moving into the safe zone
+						 red_Pawns[pawn_number-1].setLoc(0);
+
 						 for (int i = 0; i < card_number-(59-rpl); i++) // -1 because vector begins at 0  // Continue for other colors and removed -1
 						 {
-							 red_Pawns[pawn_number-1].setLoc_x( b[i].getLoc_x() );
-							 red_Pawns[pawn_number-1].setLoc_y( b[i].getLoc_y() );
-							 tempPawnLocation++;
+							 if (i <= 2)
+							 {
+								 red_Pawns[pawn_number-1].setLoc_x( b[i].getLoc_x() );
+								 red_Pawns[pawn_number-1].setLoc_y( b[i].getLoc_y() );
+								 red_Pawns[pawn_number-1].setLoc(i);
+								 tempPawnLocation++;
+							 }
 							 //Todo IsSafe -> So set pawn vector Location = -2 
+							 else if (isSafe(1))
+							 {
+								 red_Pawns[pawn_number-1].setLoc_x( red_Home[iC].getLoc_x() );
+								 red_Pawns[pawn_number-1].setLoc_y( red_Home[iC].getLoc_y() );
+								 iC++;
+							 }
 							 
 						 }
 
 						 //Todo IsSlide -> which slide it is, and move accordingly and bump all non-teammate pawns
 						 //Todo Is Occupied -> Bump(send other piece start) 
-						 red_Pawns[pawn_number-1].setLoc(tempPawnLocation);
+						 if (!isSafe())
+							red_Pawns[pawn_number-1].setLoc(tempPawnLocation);
+						 else if (isSafe(1))
+							 red_Pawns[pawn_number-1].setLoc(99+iC);
 					 }
 
 					 else
 					 {
+						 int iC = 0;
 						 for (int i = 1; i <= card_number; i++)// Continue for other colors
 						 {
-							 red_Pawns[pawn_number-1].setLoc_x( b[rpl+i].getLoc_x() );
-							 red_Pawns[pawn_number-1].setLoc_y( b[rpl+i].getLoc_y() );
+							 if (!isSafe())
+							 {
+								 red_Pawns[pawn_number-1].setLoc_x( b[rpl+i].getLoc_x() );
+								 red_Pawns[pawn_number-1].setLoc_y( b[rpl+i].getLoc_y() );
+							 }
+							 else if (isSafe())
+							 {
+								 red_Pawns[pawn_number-1].setLoc_x( red_Home[iC].getLoc_x() );
+								 red_Pawns[pawn_number-1].setLoc_y( red_Home[iC].getLoc_y() );
+								 iC++;
+							 }
+
+							 
 						 }
+						 if (!isSafe())
+							 red_Pawns[pawn_number-1].setLoc(rpl+card_number);
+						 else if (isSafe())
+							 red_Pawns[pawn_number-1].setLoc(99+iC);
+					 }
+				 }
+				 else if (rpl >= 100 && rpl <= 104)
+				 {
+					 if ( rpl + card_number <= 104)
+					 {
+						 for (int i = 1; i <= card_number; i++)// Continue for other colors
+							 {
+								 red_Pawns[pawn_number-1].setLoc_x( red_Home[(rpl+i)-100].getLoc_x() );
+								 red_Pawns[pawn_number-1].setLoc_y( red_Home[(rpl+i)-100].getLoc_y() );
+							 }
 						 red_Pawns[pawn_number-1].setLoc(rpl+card_number);
+					 }
+					 else if (rpl + card_number == 105)
+					 {
+						 red_Pawns[pawn_number-1].setLoc_x( red_Home[5+pawn_number-1].getLoc_x() );
+						 red_Pawns[pawn_number-1].setLoc_y( red_Home[5+pawn_number-1].getLoc_y() );
 					 }
 
 				 }
 			 }
+			 if (pawn_number < 4 && pawn_number >= 0)
+				 nudPwnNum -> Value = red_Pawns[pawn_number-1].getLoc();
 
 			 //
 			 //////////////////////////////// BLUE //////////////////////////////////
@@ -628,13 +709,15 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 private: System::Void panel1_MouseMove(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 			 nudX -> Value = (e->X);
 			 nudY -> Value = (e->Y);
+
+
 		 }
 };
 
 
 Brush ^convertColor(int c)
 {
-	Brush ^col; // TODO Fucking pictures or somthing god dammit
+	Brush ^col; // TODO pictures or somthing god dammit
 	if (c == 1)
 		col = gcnew SolidBrush(Color::Red);
 	else if (c == 2)
@@ -647,6 +730,58 @@ Brush ^convertColor(int c)
 		col = gcnew SolidBrush(Color::Pink);
 
 	return col;
+}
+bool isSafe(int num)
+{
+	if (pawn_number >= 1 && pawn_number < 5) // card_number <=  8 - loc
+	{
+		if ((red_Pawns[pawn_number-1].getLoc() == 2 ))
+		{
+			//red_Pawns[pawn_number-1].setLoc(-2);
+			return true;
+		}
+	}
+	return false;
+}
+bool isSafe()
+{
+		if (pawn_number >= 1 && pawn_number < 5) // card_number <=  8 - loc
+		{
+			if ((red_Pawns[pawn_number-1].getLoc() < 3 ) && ( card_number <= 8 - red_Pawns[pawn_number-1].getLoc()) && (card_number + red_Pawns[pawn_number-1].getLoc() > 2))
+			{
+				//red_Pawns[pawn_number-1].setLoc(-2);
+				return true;
+			}
+		}
+			
+		else if (pawn_number >= 5 && pawn_number < 9)
+		{
+			if (blue_Pawns[pawn_number-5].getLoc() < 18 && card_number <= 8 -blue_Pawns[pawn_number-5].getLoc())
+			{
+				//blue_Pawns[pawn_number-5].setLoc(-2);
+				return true;
+			}
+		}
+			
+		else if (pawn_number >= 9 && pawn_number < 13)
+		{
+			if (yellow_Pawns[pawn_number-9].getLoc() < 33 && card_number <= 8 - yellow_Pawns[pawn_number-9].getLoc())
+			{
+				//yellow_Pawns[pawn_number-9].setLoc(-2);
+				return true;
+			}
+		}
+			
+		else if (pawn_number >= 13)
+		{
+			if (green_Pawns[pawn_number-13].getLoc() < 48 && card_number <= 8 - green_Pawns[pawn_number-13].getLoc())
+			{
+				//green_Pawns[pawn_number-13].setLoc(-2);
+				return true;
+			}
+		}
+		return false;
+			
 }
 
 int getCell(int x, int y)
