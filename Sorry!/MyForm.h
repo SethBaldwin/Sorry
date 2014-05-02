@@ -18,9 +18,9 @@ int mouseX,mouseY; // Get Click location
 int pawnLoc; // Used in makeMove button to keep track of the pawns location in the board vector.
 
 
-int turn = 0;
+int turn = 0; // Starts on 0 for red
 
-int pawn_number;
+int pawn_number;// 1-
 int card_number;
 
 vector<int> cardInts;
@@ -92,18 +92,29 @@ namespace Sorry {
 		}
 	private: System::Windows::Forms::Panel^  panel1;
 	private: System::Windows::Forms::Timer^  draw;
-	private: System::Windows::Forms::NumericUpDown^  pawnNum;
+
 
 	private: System::Windows::Forms::Button^  drawCard;
-	private: System::Windows::Forms::NumericUpDown^  cardNum;
+
 	private: System::Windows::Forms::Button^  makeMove;
-	private: System::Windows::Forms::NumericUpDown^  nudX;
-	private: System::Windows::Forms::NumericUpDown^  nudY;
-	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::Label^  label2;
+
+
+
+
 	private: System::Windows::Forms::Button^  button1;
-	private: System::Windows::Forms::NumericUpDown^  nudPwnNum;
-	private: System::Windows::Forms::Label^  label3;
+
+
+	private: System::Windows::Forms::Label^  lblPlayer;
+	private: System::Windows::Forms::Label^  lblInstruction;
+	private: System::Windows::Forms::Label^  lblPawn;
+	private: System::Windows::Forms::Label^  lblError;
+	private: System::Windows::Forms::Timer^  check;
+	private: System::Windows::Forms::Panel^  panel2;
+	private: System::Windows::Forms::Panel^  title_panel;
+
+	private: System::Windows::Forms::Button^  begin;
+
+
 	private: System::ComponentModel::IContainer^  components;
 	protected: 
 
@@ -124,22 +135,18 @@ namespace Sorry {
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->draw = (gcnew System::Windows::Forms::Timer(this->components));
-			this->pawnNum = (gcnew System::Windows::Forms::NumericUpDown());
 			this->drawCard = (gcnew System::Windows::Forms::Button());
-			this->cardNum = (gcnew System::Windows::Forms::NumericUpDown());
 			this->makeMove = (gcnew System::Windows::Forms::Button());
-			this->nudX = (gcnew System::Windows::Forms::NumericUpDown());
-			this->nudY = (gcnew System::Windows::Forms::NumericUpDown());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->nudPwnNum = (gcnew System::Windows::Forms::NumericUpDown());
-			this->label3 = (gcnew System::Windows::Forms::Label());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pawnNum))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->cardNum))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudX))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudY))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudPwnNum))->BeginInit();
+			this->lblPlayer = (gcnew System::Windows::Forms::Label());
+			this->lblInstruction = (gcnew System::Windows::Forms::Label());
+			this->lblPawn = (gcnew System::Windows::Forms::Label());
+			this->lblError = (gcnew System::Windows::Forms::Label());
+			this->check = (gcnew System::Windows::Forms::Timer(this->components));
+			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->title_panel = (gcnew System::Windows::Forms::Panel());
+			this->begin = (gcnew System::Windows::Forms::Button());
+			this->title_panel->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// panel1
@@ -158,80 +165,39 @@ namespace Sorry {
 			// 
 			this->draw->Tick += gcnew System::EventHandler(this, &MyForm::draw_Tick);
 			// 
-			// pawnNum
-			// 
-			this->pawnNum->Location = System::Drawing::Point(635, 177);
-			this->pawnNum->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {5, 0, 0, System::Int32::MinValue});
-			this->pawnNum->Name = L"pawnNum";
-			this->pawnNum->Size = System::Drawing::Size(72, 20);
-			this->pawnNum->TabIndex = 1;
-			// 
 			// drawCard
 			// 
-			this->drawCard->Location = System::Drawing::Point(617, 36);
+			this->drawCard->Cursor = System::Windows::Forms::Cursors::Default;
+			this->drawCard->Font = (gcnew System::Drawing::Font(L"Rockwell", 14.25F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)), 
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->drawCard->Location = System::Drawing::Point(623, 60);
+			this->drawCard->Margin = System::Windows::Forms::Padding(1, 3, 1, 3);
 			this->drawCard->Name = L"drawCard";
-			this->drawCard->Size = System::Drawing::Size(105, 31);
+			this->drawCard->Size = System::Drawing::Size(123, 40);
 			this->drawCard->TabIndex = 2;
 			this->drawCard->Text = L"Draw Card";
 			this->drawCard->UseVisualStyleBackColor = true;
 			this->drawCard->Click += gcnew System::EventHandler(this, &MyForm::drawCard_Click);
 			// 
-			// cardNum
-			// 
-			this->cardNum->Location = System::Drawing::Point(635, 82);
-			this->cardNum->Name = L"cardNum";
-			this->cardNum->Size = System::Drawing::Size(72, 20);
-			this->cardNum->TabIndex = 3;
-			// 
 			// makeMove
 			// 
-			this->makeMove->Location = System::Drawing::Point(617, 118);
+			this->makeMove->BackColor = System::Drawing::SystemColors::ButtonFace;
+			this->makeMove->Enabled = false;
+			this->makeMove->Font = (gcnew System::Drawing::Font(L"Rockwell", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->makeMove->Location = System::Drawing::Point(604, 255);
 			this->makeMove->Name = L"makeMove";
-			this->makeMove->Size = System::Drawing::Size(105, 35);
+			this->makeMove->Size = System::Drawing::Size(173, 45);
 			this->makeMove->TabIndex = 4;
 			this->makeMove->Text = L"Move";
 			this->makeMove->UseVisualStyleBackColor = true;
 			this->makeMove->Click += gcnew System::EventHandler(this, &MyForm::makeMove_Click);
 			// 
-			// nudX
-			// 
-			this->nudX->DecimalPlaces = 1;
-			this->nudX->Location = System::Drawing::Point(632, 276);
-			this->nudX->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1000, 0, 0, 0});
-			this->nudX->Name = L"nudX";
-			this->nudX->Size = System::Drawing::Size(75, 20);
-			this->nudX->TabIndex = 5;
-			// 
-			// nudY
-			// 
-			this->nudY->DecimalPlaces = 1;
-			this->nudY->Location = System::Drawing::Point(632, 317);
-			this->nudY->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1000, 0, 0, 0});
-			this->nudY->Name = L"nudY";
-			this->nudY->Size = System::Drawing::Size(75, 20);
-			this->nudY->TabIndex = 6;
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(612, 278);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(14, 13);
-			this->label1->TabIndex = 7;
-			this->label1->Text = L"X";
-			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(612, 319);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(14, 13);
-			this->label2->TabIndex = 8;
-			this->label2->Text = L"Y";
-			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(617, 362);
+			this->button1->Font = (gcnew System::Drawing::Font(L"Rockwell", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->button1->Location = System::Drawing::Point(641, 515);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(105, 35);
 			this->button1->TabIndex = 9;
@@ -239,53 +205,122 @@ namespace Sorry {
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::bump);
 			// 
-			// nudPwnNum
+			// lblPlayer
 			// 
-			this->nudPwnNum->Location = System::Drawing::Point(632, 509);
-			this->nudPwnNum->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {120, 0, 0, 0});
-			this->nudPwnNum->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {2, 0, 0, System::Int32::MinValue});
-			this->nudPwnNum->Name = L"nudPwnNum";
-			this->nudPwnNum->Size = System::Drawing::Size(50, 20);
-			this->nudPwnNum->TabIndex = 10;
-			this->nudPwnNum->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
+			this->lblPlayer->BackColor = System::Drawing::Color::Silver;
+			this->lblPlayer->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->lblPlayer->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->lblPlayer->Font = (gcnew System::Drawing::Font(L"Rockwell", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->lblPlayer->ForeColor = System::Drawing::Color::Red;
+			this->lblPlayer->Location = System::Drawing::Point(604, 9);
+			this->lblPlayer->Name = L"lblPlayer";
+			this->lblPlayer->Size = System::Drawing::Size(173, 37);
+			this->lblPlayer->TabIndex = 12;
+			this->lblPlayer->Text = L"Red\'s Turn";
+			this->lblPlayer->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
-			// label3
+			// lblInstruction
 			// 
-			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(614, 493);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(78, 13);
-			this->label3->TabIndex = 11;
-			this->label3->Text = L"Red Pawn Loc";
+			this->lblInstruction->BackColor = System::Drawing::Color::Silver;
+			this->lblInstruction->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->lblInstruction->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->lblInstruction->Font = (gcnew System::Drawing::Font(L"Rockwell", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->lblInstruction->Location = System::Drawing::Point(604, 114);
+			this->lblInstruction->Name = L"lblInstruction";
+			this->lblInstruction->Size = System::Drawing::Size(173, 88);
+			this->lblInstruction->TabIndex = 13;
+			this->lblInstruction->Text = L"Draw a card";
+			this->lblInstruction->TextAlign = System::Drawing::ContentAlignment::TopCenter;
+			// 
+			// lblPawn
+			// 
+			this->lblPawn->BackColor = System::Drawing::Color::Silver;
+			this->lblPawn->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->lblPawn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->lblPawn->Font = (gcnew System::Drawing::Font(L"Rockwell", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->lblPawn->Location = System::Drawing::Point(604, 202);
+			this->lblPawn->Name = L"lblPawn";
+			this->lblPawn->Size = System::Drawing::Size(173, 37);
+			this->lblPawn->TabIndex = 14;
+			this->lblPawn->Text = L"No pawn selected";
+			this->lblPawn->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// lblError
+			// 
+			this->lblError->BackColor = System::Drawing::Color::Silver;
+			this->lblError->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->lblError->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->lblError->Font = (gcnew System::Drawing::Font(L"Rockwell", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->lblError->Location = System::Drawing::Point(604, 338);
+			this->lblError->Name = L"lblError";
+			this->lblError->Size = System::Drawing::Size(173, 119);
+			this->lblError->TabIndex = 15;
+			this->lblError->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// check
+			// 
+			this->check->Tick += gcnew System::EventHandler(this, &MyForm::check_Tick);
+			// 
+			// panel2
+			// 
+			this->panel2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"panel2.BackgroundImage")));
+			this->panel2->Location = System::Drawing::Point(604, 323);
+			this->panel2->Name = L"panel2";
+			this->panel2->Size = System::Drawing::Size(173, 149);
+			this->panel2->TabIndex = 16;
+			// 
+			// title_panel
+			// 
+			this->title_panel->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"title_panel.BackgroundImage")));
+			this->title_panel->Controls->Add(this->begin);
+			this->title_panel->Location = System::Drawing::Point(0, 0);
+			this->title_panel->Name = L"title_panel";
+			this->title_panel->Size = System::Drawing::Size(799, 594);
+			this->title_panel->TabIndex = 17;
+			// 
+			// begin
+			// 
+			this->begin->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"begin.BackgroundImage")));
+			this->begin->Font = (gcnew System::Drawing::Font(L"Rockwell", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->begin->ForeColor = System::Drawing::SystemColors::ButtonFace;
+			this->begin->Location = System::Drawing::Point(140, 166);
+			this->begin->Name = L"begin";
+			this->begin->Size = System::Drawing::Size(172, 73);
+			this->begin->TabIndex = 0;
+			this->begin->Text = L"Begin";
+			this->begin->UseVisualStyleBackColor = true;
+			this->begin->Click += gcnew System::EventHandler(this, &MyForm::begin_Click);
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)), 
+				static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(784, 594);
-			this->Controls->Add(this->label3);
-			this->Controls->Add(this->nudPwnNum);
+			this->Controls->Add(this->title_panel);
+			this->Controls->Add(this->lblPawn);
+			this->Controls->Add(this->lblInstruction);
+			this->Controls->Add(this->lblPlayer);
 			this->Controls->Add(this->button1);
-			this->Controls->Add(this->label2);
-			this->Controls->Add(this->label1);
-			this->Controls->Add(this->nudY);
-			this->Controls->Add(this->nudX);
 			this->Controls->Add(this->makeMove);
-			this->Controls->Add(this->cardNum);
 			this->Controls->Add(this->drawCard);
-			this->Controls->Add(this->pawnNum);
 			this->Controls->Add(this->panel1);
+			this->Controls->Add(this->lblError);
+			this->Controls->Add(this->panel2);
+			this->Cursor = System::Windows::Forms::Cursors::Default;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedToolWindow;
 			this->Name = L"MyForm";
 			this->Text = L"Sorry!";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pawnNum))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->cardNum))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudX))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudY))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->nudPwnNum))->EndInit();
+			this->title_panel->ResumeLayout(false);
 			this->ResumeLayout(false);
-			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -346,6 +381,8 @@ namespace Sorry {
 					 gp1 -> DrawImage(greenPawn, green_Pawns[i].getLoc_x()+2, green_Pawns[i].getLoc_y()+2, CellSize-3,CellSize-3);
 
 
+
+
 				 draw -> Enabled = false;
 			 }
 
@@ -356,17 +393,17 @@ namespace Sorry {
 				 pawn_number = getPawn(mouseX,mouseY);
 
 				 if (pawn_number >= 1 && pawn_number < 5)
-					red_Pawns[pawn_number-1].setCol(5);
+					 lblPawn -> Text = "Red pawn " + pawn_number;
 				 else if (pawn_number >= 5 && pawn_number < 9)
-					blue_Pawns[pawn_number-5].setCol(5);
+					 lblPawn -> Text = "Blue pawn " + (pawn_number-4);
 				 else if (pawn_number >= 9 && pawn_number < 13)
-					yellow_Pawns[pawn_number-9].setCol(5);
+					 lblPawn -> Text = "Yellow pawn " + (pawn_number-8);
 				 else if (pawn_number >= 13)
-					green_Pawns[pawn_number-13].setCol(5);
+					 lblPawn -> Text = "Green pawn " + (pawn_number-12);
+				 else
+					 lblPawn -> Text = "No Pawn Selected ";
 
-				 pawnNum->Value = pawn_number;
 
-				 draw -> Enabled = true;
 
 			 }
 private: System::Void bump(System::Object^  sender, System::EventArgs^  e){
@@ -406,11 +443,37 @@ private: System::Void drawCard_Click(System::Object^  sender, System::EventArgs^
 			 if (cardInts.size() > 0)
 			 {
 				card_number = cardInts.back();
-				cardNum -> Value = card_number; // For GUI to show what card was 'drawn'
 				cardInts.pop_back();
 			 }
 			 else
 				 makeDeck();
+
+			 lblError -> Text = "";
+
+			 switch(turn)
+			 {
+			 case 0:
+				 //lblPlayer -> Text = "Red's Turn";
+				 lblInstruction -> Text = "You drew a " + card_number + "\n Select pawn to move"; // For GUI to show what card was 'drawn'
+
+				 break;
+			 case 1:
+				 //lblPlayer -> Text = "Blue's Turn";
+				 lblInstruction -> Text = "You drew a " + card_number + "\n Select pawn to move";
+				 break;
+			 case 2:
+				 //lblPlayer -> Text = "Yellow's Turn";
+				 lblInstruction -> Text = "You drew a " + card_number + "\n Select pawn to move";
+				 break;
+			 case 3:
+				 //lblPlayer -> Text = "Green's Turn";
+				 lblInstruction -> Text = "You drew a " + card_number + "\n Select pawn to move";
+				 break;
+			 }
+
+			 check -> Enabled = true;
+
+
 		 }
 private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^  e) {
 			 //IF for 4 colors.
@@ -442,7 +505,9 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 						 red_Pawns[pawn_number-1].setLoc(card_number+3);// Continue for other colors
 						 //Todo isOccupied
 					 }
-					 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
+					 else{
+						 lblError -> Text = "You can only leave start on a 1 or 2.";
+					 }//TODO ERROR "Can only exit home on 1 or 2" -> next turn
 				 }
 				 //
 				 // For Going around brim of board
@@ -535,8 +600,8 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 
 				 }
 			 }
-			 if (pawn_number < 4 && pawn_number >= 0)
-				 nudPwnNum -> Value = red_Pawns[pawn_number-1].getLoc();
+			 //if (pawn_number < 4 && pawn_number >= 0)
+
 
 			 //
 			 //////////////////////////////// BLUE //////////////////////////////////
@@ -613,7 +678,7 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 						 }
 						 yellow_Pawns[pawn_number-9].setLoc(card_number+33);
 					 }
-					 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
+					 else{lblError -> Text = "You can only leave start on a 1 or 2.";}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
 				 }
 
 				 else if (yellow_Pawns[pawn_number-9].getLoc() >= 0)
@@ -668,7 +733,7 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 						 }
 						 green_Pawns[pawn_number-13].setLoc(card_number+48);
 					 }
-					 else{}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
+					 else{lblError -> Text = "You can only leave start on a 1 or 2.";}//TODO ERROR "Can only exit home on 1 or 2" -> next turn
 				 }
 
 				 else if (green_Pawns[pawn_number-13].getLoc() >= 0)
@@ -703,14 +768,84 @@ private: System::Void makeMove_Click(System::Object^  sender, System::EventArgs^
 			 }
 
 
+			 if (turn == 3)
+				 turn = 0;
+			 else 
+				 turn++;
 
+
+			 switch(turn)
+			 {
+			 case 0:
+				 lblPlayer -> ForeColor = Color(Color::Red);
+				 lblPlayer -> Text = "Red's Turn";
+				 lblInstruction -> Text = "Draw a card"; // For GUI to show what card was 'drawn'
+
+				 break;
+			 case 1:
+				 lblPlayer -> ForeColor = Color(Color::Blue);
+				 lblPlayer -> Text = "Blue's Turn";
+				 lblInstruction -> Text = "Draw a card";
+				 break;
+			 case 2:
+				 lblPlayer -> ForeColor = Color(Color::Yellow);
+				 lblPlayer -> Text = "Yellow's Turn";
+				 lblInstruction -> Text = "Draw a card";
+				 break;
+			 case 3:
+				 lblPlayer -> ForeColor = Color(Color::Green);
+				 lblPlayer -> Text = "Green's Turn";
+				 lblInstruction -> Text = "Draw a card";
+				 break;
+			 }
+
+
+			 makeMove -> Enabled = false;
+			 check -> Enabled = false;
 			 draw -> Enabled = true;
 		 }
 private: System::Void panel1_MouseMove(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-			 nudX -> Value = (e->X);
-			 nudY -> Value = (e->Y);
+			 //nudX -> Value = (e->X);
+			 //nudY -> Value = (e->Y);
 
 
+		 }
+private: System::Void check_Tick(System::Object^  sender, System::EventArgs^  e) {
+			 switch (turn)
+			 {
+			 case 0:
+				 if (pawn_number < 5 && pawn_number >= 1)
+					 makeMove -> Enabled = true;
+				 else 
+					 makeMove -> Enabled = false;
+				 break;
+			 case 1:
+				 if (pawn_number < 9 && pawn_number >= 5)
+					 makeMove -> Enabled = true;
+				 else 
+					 makeMove -> Enabled = false;
+				 break;
+			 case 2:
+				 if (pawn_number < 13 && pawn_number >= 9)
+					 makeMove -> Enabled = true;
+				 else 
+					 makeMove -> Enabled = false;
+				 break;
+			 case 3:
+				 if (pawn_number < 213 && pawn_number >= 13)
+					 makeMove -> Enabled = true;
+				 else 
+					 makeMove -> Enabled = false;
+				 break;
+			 }
+		 }
+private: System::Void begin_Click(System::Object^  sender, System::EventArgs^  e) {
+
+			 title_panel -> Visible = false;
+			 title_panel -> Enabled = false;
+			 begin -> Visible = false;
+
+			 draw -> Enabled = true;
 		 }
 };
 
@@ -959,9 +1094,10 @@ void pawnSetup()
 
 void makeDeck()
 {
-	int cr[] = {1,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,7,7,7,7,8,8,8,8,10,10,10,10,11,11,11,11,12,12,12,12,13,13,13,13};
+	//int cr[] = {1,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,7,7,7,7,8,8,8,8,10,10,10,10,11,11,11,11,12,12,12,12,13,13,13,13};
+	int cr[] = {7,4,1,3,2,10,3,1,8,5,1,5,2,1,11,7,8,4,1,10};
 	cardInts.assign(cr, cr + sizeof cr / sizeof cr[0]);
-	random_shuffle( cardInts.begin(), cardInts.end() );
+	//random_shuffle( cardInts.begin(), cardInts.end() );
 }
 
 //1. Title Page
